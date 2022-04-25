@@ -1,19 +1,20 @@
 import Image from "next/image";
 import styles from "../styles/ProductCard.module.css";
 import Link from "next/link";
-import AddCart from "./AddButton";
+import AddCart from "./AddCart";
 
-const ProductCard = ({ prodotto }) => {
+const ProductCard = ({ product }) => {
   return (
     <div className={styles.container}>
-      <Link href={`/product/${prodotto.id}`} passHref>
+      <Link href={ `/product/${product.id}` } passHref>
         
-        <Image src={prodotto.image} alt="" width="500" height="500" />
+        <Image src={ product.image } alt="" width="500" height="500" />
       </Link>
-      <h1 className={styles.title}>{prodotto.name}</h1>
-      <span className={styles.price}>€ {prodotto.price} al kg</span>
-      <p className={styles.desc}>{prodotto.description}</p>
-      <AddCart/>
+      <h1 className={ styles.title }>{ product.name }</h1>
+      <span className={ styles.price }>€ { product.price } al kg</span>
+      <p className={ styles.desc }>{ product.description }</p>
+      
+      <AddCart product={ product }/>
     </div>
   );
 };

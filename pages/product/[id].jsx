@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addProduct } from "../../redux/cartSlice";
 import { useRouter } from 'next/router';
 import { useParams } from "react-router-dom";
+import AddCart from "../../components/AddCart";
 
 const Product = () => {
 
@@ -33,7 +34,7 @@ const Product = () => {
 
   }
 
-  const dispatch = useDispatch();
+  /*const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(product.price);
   
@@ -43,7 +44,7 @@ const Product = () => {
 
   const handleClick = () => {
     dispatch(addProduct({...product,quantity}));
-  };
+  };*/
  
   return (
     <div className={styles.container}>
@@ -62,21 +63,8 @@ const Product = () => {
         <br/>
         <br />
         <h3 className={styles.choose}>Scegli la quantità</h3>
-        <div className={styles.add}>
-          <input
-            onChange={(e) => setQuantity(e.target.value)}
-            type="number"
-            defaultValue={1}
-            className={styles.quantity}
-          />
-              kg
-          <p className={styles.desc}>Totale da pagare: {product.price * quantity} €</p>  
-          <button className={styles.button} onClick={handleClick}>
-              Aggiungi al carrello
-          </button>
-          <br />
-          
-        </div>
+        
+        <AddCart product={ product }/>
       </div>
     </div>
   );
