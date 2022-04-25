@@ -6,7 +6,19 @@ import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/cartSlice";
 import { useRouter } from 'next/router';
 
-export default function AddCart() {
+export default function AddCart({ product }) {
+
+  const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState(product.price);
+
+  const changePrice = (number) => {
+    setPrice(price * number);
+  };
+
+  const handleClick = () => {
+    dispatch(addProduct({...product,quantity}));
+  };
 
 
   return (
@@ -16,9 +28,10 @@ export default function AddCart() {
             type="number"
             defaultValue={1}
             className={styles.quantity}
+            min="1"
           />
               kg
-          <p className={styles.desc}>Totale da pagare: {product.price * quantity} €</p>  
+          <p className={styles.desc}>Totale: {product.price * quantity} €</p>  
           <button className={styles.button} onClick={handleClick}>
               Aggiungi al carrello
           </button>
