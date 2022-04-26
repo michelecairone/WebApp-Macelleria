@@ -1,6 +1,8 @@
 .container {
   height: calc(100vh - 100px);
   display: flex;
+
+  text-align: center;
 }
 
 .left {
@@ -22,7 +24,9 @@
   position: relative;
 }
 
-
+.add {
+  text-align: center;
+}
 
 .price {
   color: #008cff;

@@ -28,7 +28,9 @@ const Navbar = () => {
           <Image src="/image/logo.png" alt="" width="100px" height="100px" />
           <li className={styles.listItem}>Events</li>
           <li className={styles.listItem}>Blog</li>
-          <li className={styles.listItem}>Contact</li>
+          <a href="/#contatti">
+            <li className={styles.listItem}>Contatti</li>
+          </a>
         </ul>
       </div>
       <div className={styles.dropup}>
