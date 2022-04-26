@@ -1,23 +1,7 @@
 import styles from "../styles/ProductList.module.css";
 import ProductCard from "./ProductCard";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
-
-export default function ProductList() {
-
-  const [prodotti, setProdotti] = useState([]);
-  useEffect(() => {
-    getProdotti();
-  }, []);
-
-  function getProdotti() {
-    axios.get('http://localhost:80/api/products/').then(function(response) {
-      console.log(response.data);
-      setProdotti(response.data);
-      
-    });
-  }
+export default function ProductList({productList}) {
 
   return (
     <div className={ styles.container }>
@@ -30,12 +14,10 @@ export default function ProductList() {
         Vi aspettiamo super carichi pronti per preparare insieme succulenti manicaretti! 🥩🍗😋
       </p>
       <div className={ styles.wrapper }>
-        {prodotti.map((product, key) => (
-          <ProductCard key={ product.id } product={ product } />
+        {productList.map((product) => (
+          <ProductCard product={ product } />
         ))}
       </div>
     </div>
   );
 };
-
-

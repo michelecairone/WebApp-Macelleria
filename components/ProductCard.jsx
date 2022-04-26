@@ -7,7 +7,6 @@ const ProductCard = ({ product }) => {
   return (
     <div className={styles.container}>
       <Link href={ `/product/${product.id}` } passHref>
-        
         <Image src={ product.image } alt="" width="500" height="500" />
       </Link>
       <h1 className={ styles.title }>{ product.name }</h1>

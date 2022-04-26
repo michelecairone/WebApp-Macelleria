@@ -8,7 +8,7 @@ import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Home({productList}) {
   const [close, setClose] = useState(true);
   return (
     <div className={styles.container}>
@@ -20,14 +20,23 @@ export default function Home() {
       <Featured />
       {<AddButton setClose={setClose} />}
       <a name="prodotti">
-      <ProductList/>
+        <ProductList productList={productList}/>
       </a>
       {!close && <Add setClose={setClose} />}
     </div>
   );
 }
 
+export const getServerSideProps = async () => {
 
+  const res = await axios.get('http://localhost:80/api/products/');
+  return {
+    props: {
+      productList: res.data
+
+    },
+  };
+};
 
 /*
 async function getProdotti() {
