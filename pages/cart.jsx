@@ -110,7 +110,7 @@ const Cart = () => {
                 <td>
                   <div className={styles.imgContainer}>
                     {product.image ?
-                      <Image src={product.image} objectFit="contain" layout="fill" alt="" /> :
+                      <Image src={`/image/${product.image}`}  objectFit="contain" layout="fill" alt="" /> :
                       <Image src={"/image/download.png"} width="300" height="500" />
                     }
                   </div>
