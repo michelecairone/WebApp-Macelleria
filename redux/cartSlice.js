@@ -11,18 +11,17 @@ const cartSlice = createSlice({
     addProduct: (state, action) => {
 
      const found = state.products.find(product => product.id == action.payload.id);
-     
+
       if (found !== undefined){
         const index = state.products.indexOf(found);
         found.quantity += action.payload.quantity;
         state.products.splice(index, 1, found);
-        state.total += action.payload.price * action.payload.quantity;
       }
       else {
         state.products.push(action.payload);
         state.quantity += 1;
-        state.total += action.payload.price * action.payload.quantity;
-      } 
+      }
+      state.total += action.payload.price * action.payload.quantity;   
     },
     reset: (state) => {
       state.products = [];
