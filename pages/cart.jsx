@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { reset } from "../redux/cartSlice";
 import OrderDetail from "../components/OrderDetail";
+import LogMenu from "../components/LogMenu";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -168,9 +169,9 @@ const Cart = () => {
               </PayPalScriptProvider>
             </div>
           ) : (
-            <button onClick={() => setOpen(true)} className={styles.button}>
-              FAI IL CHECKOUT!
-            </button>
+            
+            <LogMenu string={"FAI IL CHECKOUT!"}/>
+            
           )}
         </div>
       </div>

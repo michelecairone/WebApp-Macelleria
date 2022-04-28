@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    
     "@paypal/react-paypal-js": "^7.6.0",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.1",
@@ -19,6 +18,7 @@
     "react-hook-form": "^7.30.0",
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
+    "reactjs-popup": "^2.0.5",
     "yup": "^0.32.11"
   },
   "devDependencies": {
