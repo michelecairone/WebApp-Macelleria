@@ -15,7 +15,7 @@ export default function ProductList({productList}) {
       </p>
       <div className={ styles.wrapper }>
         {productList.map((product) => (
-          <ProductCard product={ product } />
+          <ProductCard key={product.id} product={ product } />
         ))}
       </div>
     </div>
