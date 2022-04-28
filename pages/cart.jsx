@@ -122,11 +122,11 @@ const Cart = () => {
                   <span className={styles.price}>{product.price} €</span>
                 </td>
                 <td>
-                  <span className={styles.quantity}>{product.quantity} kg</span>
+                  <span className={styles.quantity}>{(product.quantity).toFixed(4)} kg</span>
                 </td>
                 <td>
                   <span className={styles.total}>
-                   {product.price * product.quantity} €
+                   {(product.price * product.quantity).toFixed(2)} €
                   </span>
                 </td>
                 <td></td>
@@ -139,13 +139,13 @@ const Cart = () => {
         <div className={styles.wrapper}>
           <h2 className={styles.title}>CARRELLO TOTALE</h2>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Totale parziale:</b>{cart.total} €
+            <b className={styles.totalTextTitle}>Totale parziale:</b>{(cart.total).toFixed(2)} €
           </div>
           <div className={styles.totalText}>
             <b className={styles.totalTextTitle}>Sconto:</b>0.00 €
           </div>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Totale:</b>{cart.total} €
+            <b className={styles.totalTextTitle}>Totale:</b>{(cart.total).toFixed(2)} €
           </div>
           {open ? (
             <div className={styles.paymentMethods}>

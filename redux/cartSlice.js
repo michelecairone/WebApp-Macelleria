@@ -13,8 +13,9 @@ const cartSlice = createSlice({
      const found = state.products.find(product => product.id == action.payload.id);
 
       if (found !== undefined){
+        const qnt = parseFloat(found.quantity) + parseFloat(action.payload.quantity);
+        found.quantity = qnt;
         const index = state.products.indexOf(found);
-        found.quantity += action.payload.quantity;
         state.products.splice(index, 1, found);
       }
       else {

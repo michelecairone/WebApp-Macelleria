@@ -31,7 +31,7 @@ export default function AddCart({ product }) {
             min="1"
           />
               kg
-          <p className={styles.desc}>Totale: {product.price * quantity} €</p>  
+          <p className={styles.desc}>Totale: {(product.price * quantity).toFixed(2)} €</p>  
           <button className={styles.button} onClick={handleClick}>
               Aggiungi al carrello
           </button>
