@@ -11,11 +11,11 @@ export default function LogMenu({ string }) {
             <Popup trigger={<button className={style.button}> {string} </button>}
                 position="bottom">
                 <p> Per poter effettuare l'ordine bisogna <br />
-                    <span className={styles.price}> <Link className={styl.price} href="/usr/login" passHref>Accedere</Link></span>
+                    <span className={styles.price}> <Link href="/usr/login" passHref>Accedere</Link></span>
                 <br />
                 o
                 <br />
-                    <span className={styles.price}> <Link className={styl.price} href="/usr/register" passHref>Registrarsi</Link> </span>
+                    <span className={styles.price}> <Link href="/usr/register" passHref>Registrarsi</Link> </span>
                 </p>
             </Popup>
         </div>
