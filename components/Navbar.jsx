@@ -18,19 +18,18 @@ const Navbar = () => {
       </div>
       <div className={styles.item}>
         <ul className={styles.list}>
+        <Image src="/image/logo.png" alt="" width="100px" height="100px" />
           <Link href="/" passHref>
             <li className={styles.listItem}>Homepage</li>
           </Link>
           <a href="/#prodotti">
             <li className={styles.listItem}>Products</li>
           </a>
-          <li className={styles.listItem}>Menu</li>
-          <Image src="/image/logo.png" alt="" width="100px" height="100px" />
-          <li className={styles.listItem}>Events</li>
-          <li className={styles.listItem}>Blog</li>
           <a href="/#contatti">
             <li className={styles.listItem}>Contatti</li>
           </a>
+        
+          
         </ul>
       </div>
       <div className={styles.dropup}>
