@@ -52,6 +52,22 @@ switch($method) {
           echo json_encode($users);
 
       }
+        if ($path[2] === 'user') {
+
+            $sql = "SELECT * FROM clients";
+
+            if (isset($path[3]) && is_numeric($path[3])) {
+                $sql .= " WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':id', $path[3]);
+                $stmt->execute();
+                $users = $stmt->fetch(PDO::FETCH_ASSOC);
+            } else {
+                echo json_encode("errore utente non trovato");
+                
+            }
+            echo json_encode($users);
+        }
 
           break;
     case "POST":
