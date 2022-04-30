@@ -1,15 +1,20 @@
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter} from "next/router";
 import Add from "../components/Add";
 import AddButton from "../components/AddButton";
 import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
 
-export default function Home({ productList }) {
+export default function Home({ productList, user }) {
+  console.log("prima p");
+  console.log(user);
+  console.log("dopo p");
   const [close, setClose] = useState(true);
+  
   return (
     <div className={styles.container}>
       <Head>

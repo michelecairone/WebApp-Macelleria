@@ -2,7 +2,6 @@ import Image from "next/image";
 import styles from "../styles/Navbar.module.css";
 import { useSelector } from "react-redux";
 import Link from "next/link";
-
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -37,6 +36,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 const Navbar = ({ user }) => {
+    const [label, setLabel] = React.useState(null);
     const quantity = useSelector((state) => state.cart.quantity);
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -63,9 +63,11 @@ const Navbar = ({ user }) => {
                 <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">Profilo</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Esci</Typography>
-                </MenuItem>
+                <Link href="/usr/login" passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Esci</Typography>
+                    </MenuItem>
+                </Link>
             </>
         );
     }
@@ -73,25 +75,31 @@ const Navbar = ({ user }) => {
     function NonAutenticato() {
         return (
             <>
-                <MenuItem onClick={handleCloseUserMenu}>
-                    <Link href="/usr/login" passHref>
+                <Link href="/usr/login" passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+
                         <Typography textAlign="center">Accedi</Typography>
-                    </Link>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                    <Link href="/usr/register" passHref>
+
+                    </MenuItem>
+                </Link>
+                <Link href="/usr/register" passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+
                         <Typography textAlign="center">Registrati</Typography>
-                    </Link>
-                </MenuItem>
+
+                    </MenuItem>
+                </Link>
             </>
         );
     }
 
     function Settings() {
         //const utenteAutenticato = props.utenteAutenticato;
-        if (user) {
+        if (Number.isInteger(parseInt(user.id))) {
+            setLabel("Profilo");
             return <Autenticato />;
         }
+        setLabel("Accedi");
         return <NonAutenticato />;
     }
 
@@ -138,25 +146,21 @@ const Navbar = ({ user }) => {
                                     display: { xs: 'block', md: 'none' },
                                 }}
                             >
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Link href="/" passHref>
+                                <Link href={`/?id=${user.id}`} passHref>
+                                    <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Home</Typography>
-                                    </Link>
-                                </MenuItem>
-
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Link href="/#prodotti" passHref>
+                                    </MenuItem>
+                                </Link>
+                                <Link href="#prodotti" passHref>
+                                    <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Prodotti</Typography>
-                                    </Link>
-                                </MenuItem>
-
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Link href="/#contatti" passHref>
+                                    </MenuItem>
+                                </Link>
+                                <Link href="#contatti"passHref>
+                                    <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Contatti</Typography>
-                                    </Link>
-                                </MenuItem>
-
-
+                                    </MenuItem>
+                                </Link>
                             </Menu>
                         </Box>
                         <Typography
@@ -168,26 +172,25 @@ const Navbar = ({ user }) => {
                             <Image src="/image/logo.png" alt="" width="100px" height="100px" />
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-
-                            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-                                <Link href="/" passHref>
+                            <Link href={`/?id=${user.id}`} passHref>
+                                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Home
-                                </Link>
-                            </Button>
-                            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-                                <Link href="/#prodotti" passHref>
+                                </Button>
+                            </Link>
+                            <Link href="#prodotti" passHref>
+                                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Prodotti
-                                </Link>
-                            </Button>
-                            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-                                <Link href="/#contatti" passHref>
+                                </Button>
+                            </Link>
+                            <Link href="#contatti" passHref>
+                                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Contatti
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Link>
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
+                            <Tooltip title={`${label}`}>
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <AccountCircleIcon color='secondary' fontSize="large" />
                                 </IconButton>
@@ -225,7 +228,7 @@ const Navbar = ({ user }) => {
                     </Toolbar>
                 </Container>
             </AppBar>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 };
 export default Navbar;

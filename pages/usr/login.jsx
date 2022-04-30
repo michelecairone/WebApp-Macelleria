@@ -28,7 +28,7 @@ const theme = createTheme({
   },
 });
 
-const Login = () => {
+const Login = ({user}) => {
 
   const router = useRouter();
   const [error, setError] = useState(false);
@@ -43,12 +43,20 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.post('http://localhost:80/api/user/login', inputs).then(function (response) {
-      setUser(response.data);
+      
       if (response.data == false) {
+        user.auth = false;
         setError(true);
       }
       else {
-        router.push(`/usr/${response.data.id}`);
+        user.id = 1;
+        user.auth = true;
+        console.log(user);
+        const id = response.data.id;
+        router.push({
+          pathname: '/',
+          query: {id},
+        })
       }
     });
   };

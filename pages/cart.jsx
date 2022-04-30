@@ -123,7 +123,7 @@ const Cart = () => {
                   <span className={styles.price}>{product.price} €</span>
                 </td>
                 <td>
-                  <span className={styles.quantity}>{(parseFloat(product.quantity)).toFixed(4)} kg</span>
+                  <span className={styles.quantity}>{(parseFloat(product.quantity)).toFixed(3)} kg</span>
                 </td>
                 <td>
                   <span className={styles.total}>

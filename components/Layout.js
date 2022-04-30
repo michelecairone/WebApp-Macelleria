@@ -1,11 +1,11 @@
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-const Layout = ({ children }) => {
-  const user = false;
+const Layout = ({ children, user }) => {
+  
   return (
     <>
-      <Navbar user={false} />
+      <Navbar user={user} />
       {children}
       <a name="contatti">
         <Footer />
