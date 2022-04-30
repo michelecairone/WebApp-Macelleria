@@ -8,7 +8,7 @@ import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
 
-export default function Home({productList}) {
+export default function Home({ productList }) {
   const [close, setClose] = useState(true);
   return (
     <div className={styles.container}>
@@ -20,7 +20,7 @@ export default function Home({productList}) {
       <Featured />
       {<AddButton setClose={setClose} />}
       <a name="prodotti">
-        <ProductList productList={productList}/>
+        <ProductList productList={productList} />
       </a>
       {!close && <Add setClose={setClose} />}
     </div>
@@ -37,34 +37,3 @@ export const getServerSideProps = async () => {
     },
   };
 };
-
-/*
-async function getProdotti() {
-
-  const res = await axios.get('http://localhost:80/api/');
-
-  const data = res.data;
-  console.log(typeof(data))
-  console.log(`prodotti: ${data}`)
-
-}
-getProdotti();
-
-
-
-export const getServerSideProps = async () => {
-
-const config = {
-  method: 'get',
-  url: 'http://localhost:80/'
-}
-const res = await axios(config);
-const prodotti = res.data;
-console.log(prodotti)
-
-  return {
-    props: {
-    prodotti
-    },
-  };
-}; */

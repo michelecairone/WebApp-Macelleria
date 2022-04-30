@@ -1,51 +1,9 @@
 import styles from "../../styles/Product.module.css";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { addProduct } from "../../redux/cartSlice";
-import { useRouter } from 'next/router';
-import { useParams } from "react-router-dom";
 import AddCart from "../../components/AddCart";
 
-const Product = () => {
-
-  const router = useRouter();
-  console.log("prima di ID");
-  const { id } = router.query;
-
-  console.log({id});
-  console.log("dopo di id ");
-
-  const [product, setproduct] = useState([]);
- 
-  useEffect(() => {
-    getProduct();
-  }, []);
-
-  async function getProduct() {
-    console.log("prima di getProduct");
-    await axios.get(`http://localhost:80/api/products/${id}`).then(function (response) {
-      console.log(response.data);
-      setproduct(response.data);
-      console.log("dopo di getProduct");
-    });
-  
-
-  }
-
-  /*const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState(product.price);
-  
-  const changePrice = (number) => {
-    setPrice(price * number);
-  };
-
-  const handleClick = () => {
-    dispatch(addProduct({...product,quantity}));
-  };*/
- 
+const Product = ({product}) => {
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -70,28 +28,15 @@ const Product = () => {
   );
 };
 
-/*export async function getServerSideProps(context) {
-  console.log(context.req.headers.referer)
+export const getServerSideProps = async ({ params }) => {
+
+  const res = await axios.get(`http://localhost:80/api/products/${params.id}`);
   return {
     props: {
-      
+      product: res.data
     },
   };
-};*/
-/*export const getServerSideProps = async () => {
-  const router = useRouter();
-  console.log(router.query);
- 
-  const res = await axios.get(
-    `http://localhost:80/api/`
-  );
-  
-  console.log(res.data)
-  return {
-    props: {
-      product: res.data,
-    },
-  };
-};*/
+};
+
 
 export default Product;
