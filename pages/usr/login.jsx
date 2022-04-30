@@ -96,6 +96,7 @@ const Login = () => {
               type="password"
               onChange={handleChange}
             />
+            {error && <span className={styles.error}>Wrong Credentials!</span>}
             <Button
               type="submit"
               fullWidth
@@ -106,11 +107,6 @@ const Login = () => {
               Accedi
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link href="/usr/register" variant="body2">
                   {"Non hai un account? Registrati"}
