@@ -10,9 +10,7 @@ import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
 
 export default function Home({ productList, user }) {
-  console.log("prima p");
-  console.log(user);
-  console.log("dopo p");
+  
   const [close, setClose] = useState(true);
   
   return (

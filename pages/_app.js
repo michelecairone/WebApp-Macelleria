@@ -6,7 +6,10 @@ import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  const param = { id: router.query.id, auth: false}
+  const param = { usr: router.query.usr, auth: false}
+  console.log("prima di MYAPP");
+  console.log(param.usr);
+  console.log("dopo di MYAPP");
   
   return (
     <Provider store={store}>

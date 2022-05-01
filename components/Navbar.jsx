@@ -95,7 +95,7 @@ const Navbar = ({ user }) => {
 
     function Settings() {
         //const utenteAutenticato = props.utenteAutenticato;
-        if (Number.isInteger(parseInt(user.id))) {
+        if (Number.isInteger(parseInt(user.usr))) {
             setLabel("Profilo");
             return <Autenticato />;
         }
@@ -146,7 +146,7 @@ const Navbar = ({ user }) => {
                                     display: { xs: 'block', md: 'none' },
                                 }}
                             >
-                                <Link href={`/?id=${user.id}`} passHref>
+                                <Link href={`/?usr=${user.usr}`} passHref>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Home</Typography>
                                     </MenuItem>
@@ -172,7 +172,7 @@ const Navbar = ({ user }) => {
                             <Image src="/image/logo.png" alt="" width="100px" height="100px" />
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            <Link href={`/?id=${user.id}`} passHref>
+                            <Link href={`/?usr=${user.usr}`} passHref>
                                 <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Home
                                 </Button>
@@ -216,7 +216,7 @@ const Navbar = ({ user }) => {
 
 
                             </Menu>
-                            <Link href="/cart" passHref>
+                            <Link href={`/cart?usr=${user.usr}`} passHref>
                                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                                     <Badge badgeContent={quantity} color="error">
                                         <ShoppingCartIcon />

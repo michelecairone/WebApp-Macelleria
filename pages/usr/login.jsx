@@ -49,13 +49,10 @@ const Login = ({user}) => {
         setError(true);
       }
       else {
-        user.id = 1;
-        user.auth = true;
-        console.log(user);
-        const id = response.data.id;
+        const usr = response.data.id;
         router.push({
           pathname: '/',
-          query: {id},
+          query: {usr},
         })
       }
     });
