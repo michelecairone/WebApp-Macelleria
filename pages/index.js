@@ -25,7 +25,7 @@ export default function Home({ productList, user }) {
       <Featured />
       {<AddButton setClose={setClose} />}
       <a name="prodotti">
-        <ProductList productList={productList} />
+        <ProductList productList={productList} user={user}/>
       </a>
       {!close && <Add setClose={setClose} />}
     </div>

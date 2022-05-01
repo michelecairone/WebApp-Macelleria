@@ -3,13 +3,11 @@ import styles from "../styles/ProductCard.module.css";
 import Link from "next/link";
 import AddCart from "./AddCart";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, user }) => {
 
- 
-  
   return (
     <div className={styles.container} >
-      <Link href={ `/product/${product.id}` } passHref>
+      <Link href={`/product/${product.id}/?id=${user.id}` } passHref>
         <div>
       
           <Image src={ `/image/${product.image}` } alt="" width="500" height="500" />
