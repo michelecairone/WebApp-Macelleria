@@ -25,14 +25,27 @@ switch($method) {
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $path[3]);
             $stmt->execute();
-            $users = $stmt->fetch(PDO::FETCH_ASSOC);
+            $products = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        } else {
+        } 
+       /*if(isset($path[4]) && isset($path[3]) && ($path[3] === 'category')) {
+            $filter = explode(',', $path[4]);
+            $sql .= ", category WHERE products.id_category = category.id";
+
+            foreach ($filter as $value){
+                $sql .= " AND category.Name = '{$value}'";
+            }
+            $stmt = $conn->prepare($sql);
+
+            $stmt->execute();
+            $products = $stmt->fetch(PDO::FETCH_ASSOC);
+        }*/
+        else {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-        echo json_encode($users);
+        echo json_encode($products);
       }
       if($path[2] === 'orders') {
 
@@ -43,13 +56,13 @@ switch($method) {
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $path[3]);
             $stmt->execute();
-            $users = $stmt->fetch(PDO::FETCH_ASSOC);
+            $orders = $stmt->fetch(PDO::FETCH_ASSOC);
         } else {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-          echo json_encode($users);
+          echo json_encode($orders);
 
       }
         if ($path[2] === 'user') {
