@@ -16,8 +16,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import Description from "../components/Description";
+import Button from '@mui/material/Button';
 
-let stringFilter;
+let stringFilter='';
 
 export default function Home({ productList, user }) {
 
@@ -27,15 +28,8 @@ export default function Home({ productList, user }) {
     Rossa: false,
     Preparati: false,
   });
-  
-  
 
-  const handleChange = (event) => {
-    setFilter({
-      ...filter,
-      [event.target.name]: event.target.checked,
-    });
-    
+  function handleSubmit(){
     stringFilter = '';
 
     if (filter.Bianca === true){
@@ -48,6 +42,19 @@ export default function Home({ productList, user }) {
       stringFilter += 'Preparati';
     }
     console.log(stringFilter);
+    //getServerSideProps();
+
+  }
+  
+  
+
+  const handleChange = (event) => {
+    setFilter({
+      ...filter,
+      [event.target.name]: event.target.checked,
+    });
+    
+    
     
   };
  
@@ -85,6 +92,15 @@ export default function Home({ productList, user }) {
             label="Preparati"
           />
         </FormGroup>
+        <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={handleSubmit} 
+                >
+                  Applica
+                </Button>
 
       </FormControl>
       
