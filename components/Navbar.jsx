@@ -114,7 +114,9 @@ const Navbar = ({ user }) => {
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         >
+                            <Link href={`/?usr=${user.usr}`} passHref>
                             <Image src="/image/logo.png" alt="" width="100px" height="100px" />
+                            </Link>
                         </Typography>
 
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -169,7 +171,9 @@ const Navbar = ({ user }) => {
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                         >
+                            <Link href={`/?usr=${user.usr}`} passHref>
                             <Image src="/image/logo.png" alt="" width="100px" height="100px" />
+                            </Link>
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Link href={`/?usr=${user.usr}`} passHref>
