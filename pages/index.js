@@ -112,13 +112,8 @@ export default function Home({ productList, user }) {
 }
 
 export const getServerSideProps = async () => {
-  let req = '';
-  if (stringFilter !== '') req = `http://localhost:80/api/products/category/${stringFilter}`;
-  else req = 'http://localhost:80/api/products/';
 
-
-
-  const res = await axios.get(req);
+  const res = await axios.get('http://localhost:80/api/products/');
   return {
     props: {
       productList: res.data

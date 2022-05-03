@@ -123,11 +123,7 @@ switch ($method) {
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                /*if ($stmt->execute()) {
-                    $response = ['status' => 1, 'message' => 'Record created successfully.'];
-                } else {
-                    $response = ['status' => 0, 'message' => 'Failed to create record.'];
-                }*/
+               
                 echo json_encode($products);
             }
         }
