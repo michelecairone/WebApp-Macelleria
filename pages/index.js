@@ -18,7 +18,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Description from "../components/Description";
 import Button from '@mui/material/Button';
 
-let stringFilter='';
+let stringFilter = '';
 
 export default function Home({ productList, user }) {
 
@@ -29,35 +29,32 @@ export default function Home({ productList, user }) {
     Preparati: false,
   });
 
-  function handleSubmit(){
-    stringFilter = '';
 
-    if (filter.Bianca === true){
-      stringFilter += 'Carne bianca,';
-    }
-    if (filter.Rossa === true){
-      stringFilter += 'Carne rossa,';
-    }
-    if (filter.Preparati === true){
-      stringFilter += 'Preparati';
-    }
-    console.log(stringFilter);
-    //getServerSideProps();
+
+  const handleSubmit = (event) => {
+
+    event.preventDefault();
+    axios.post('http://localhost:80/api/products/filter', filter).then(function (response) {
+      console.log(response.data);
+
+
+
+    });
 
   }
-  
-  
+
+
 
   const handleChange = (event) => {
     setFilter({
       ...filter,
       [event.target.name]: event.target.checked,
     });
-    
-    
-    
+
+
+
   };
- 
+
   const { Bianca, Rossa, Preparati } = filter;
 
   return (
@@ -68,46 +65,46 @@ export default function Home({ productList, user }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Featured />
-    <Description />
-    <Box sx={{ display: 'flex' }}>
-      <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-        <FormLabel component="legend">Filtri</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox checked={Bianca} onChange={handleChange} name="Bianca" />
-            }
-            label="Bianca"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={Rossa} onChange={handleChange} name="Rossa" />
-            }
-            label="Rossa"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={Preparati} onChange={handleChange} name="Preparati" />
-            }
-            label="Preparati"
-          />
-        </FormGroup>
-        <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={handleSubmit} 
-                >
-                  Applica
-                </Button>
+      <Description />
+      <Box sx={{ display: 'flex' }}>
+        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+          <FormLabel component="legend">Filtri</FormLabel>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox checked={Bianca} onChange={handleChange} name="Bianca" />
+              }
+              label="Bianca"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox checked={Rossa} onChange={handleChange} name="Rossa" />
+              }
+              label="Rossa"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox checked={Preparati} onChange={handleChange} name="Preparati" />
+              }
+              label="Preparati"
+            />
+          </FormGroup>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
+          >
+            Applica
+          </Button>
 
-      </FormControl>
-      
-    </Box>
-     
+        </FormControl>
+
+      </Box>
+
       <a name="prodotti">
-        <ProductList productList={productList} user={user}/>
+        <ProductList productList={productList} user={user} />
       </a>
       {!close && <Add setClose={setClose} />}
     </div>
@@ -117,7 +114,7 @@ export default function Home({ productList, user }) {
 export const getServerSideProps = async () => {
   let req = '';
   if (stringFilter !== '') req = `http://localhost:80/api/products/category/${stringFilter}`;
-  else req ='http://localhost:80/api/products/';
+  else req = 'http://localhost:80/api/products/';
 
 
 

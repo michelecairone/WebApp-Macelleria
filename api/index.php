@@ -10,61 +10,47 @@ $objDb = new DbConnect;
 $conn = $objDb->connect();
 
 $method = $_SERVER['REQUEST_METHOD'];
-switch($method) {
+switch ($method) {
 
     case "GET":
 
-      $path = explode('/', $_SERVER['REQUEST_URI']);
+        $path = explode('/', $_SERVER['REQUEST_URI']);
 
-      if($path[2] === 'products') {
+        if ($path[2] === 'products') {
 
-        $sql = "SELECT * FROM products";
+            $sql = "SELECT * FROM products";
 
-        if(isset($path[3]) && is_numeric($path[3])) {
-            $sql .= " WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':id', $path[3]);
-            $stmt->execute();
-            $products = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        } 
-       /*if(isset($path[4]) && isset($path[3]) && ($path[3] === 'category')) {
-            $filter = explode(',', $path[4]);
-            $sql .= ", category WHERE products.id_category = category.id";
-
-            foreach ($filter as $value){
-                $sql .= " AND category.Name = '{$value}'";
+            if (isset($path[3]) && is_numeric($path[3])) {
+                $sql .= " WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':id', $path[3]);
+                $stmt->execute();
+                $products = $stmt->fetch(PDO::FETCH_ASSOC);
             }
-            $stmt = $conn->prepare($sql);
-
-            $stmt->execute();
-            $products = $stmt->fetch(PDO::FETCH_ASSOC);
-        }*/
-        else {
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            else {
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            echo json_encode($products);
         }
-        echo json_encode($products);
-      }
-      if($path[2] === 'orders') {
+        if ($path[2] === 'orders') {
 
-        $sql = "SELECT * FROM orders";
+            $sql = "SELECT * FROM orders";
 
-        if(isset($path[3]) && is_numeric($path[3])) {
-            $sql .= " WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':id', $path[3]);
-            $stmt->execute();
-            $orders = $stmt->fetch(PDO::FETCH_ASSOC);
-        } else {
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (isset($path[3]) && is_numeric($path[3])) {
+                $sql .= " WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':id', $path[3]);
+                $stmt->execute();
+                $orders = $stmt->fetch(PDO::FETCH_ASSOC);
+            } else {
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            echo json_encode($orders);
         }
-          echo json_encode($orders);
-
-      }
         if ($path[2] === 'user') {
 
             $sql = "SELECT * FROM clients";
@@ -77,44 +63,78 @@ switch($method) {
                 $users = $stmt->fetch(PDO::FETCH_ASSOC);
             } else {
                 echo json_encode("errore utente non trovato");
-                
             }
             echo json_encode($users);
         }
 
-          break;
+        break;
     case "POST":
-        $user = json_decode( file_get_contents('php://input') );
+        $user = json_decode(file_get_contents('php://input'));
 
         $path = explode('/', $_SERVER['REQUEST_URI']);
-        if($path[2] === 'products') {
+        if ($path[2] === 'products') {
 
-          if($path[3] === 'save'){
-              $sql = "INSERT INTO products(id, name, price, amount, description, image, id_category)
+            if ($path[3] === 'save') {
+                $sql = "INSERT INTO products(id, name, price, amount, description, image, id_category)
               VALUES(null, :name, :price, :amount, :description, :image, :id_category)";
-              $stmt = $conn->prepare($sql);
+                $stmt = $conn->prepare($sql);
 
-              $stmt->bindParam(':name', $user->name);
-              $stmt->bindParam(':price', $user->price);
-              $stmt->bindParam(':amount', $user->amount);
-              $stmt->bindParam(':description', $user->description);
-              $stmt->bindParam(':image', $user->image);
-              $stmt->bindParam(':id_category', $user->id_category);
+                $stmt->bindParam(':name', $user->name);
+                $stmt->bindParam(':price', $user->price);
+                $stmt->bindParam(':amount', $user->amount);
+                $stmt->bindParam(':description', $user->description);
+                $stmt->bindParam(':image', $user->image);
+                $stmt->bindParam(':id_category', $user->id_category);
 
-              if($stmt->execute()) {
-                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
-              } else {
-                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
-              }
-              echo json_encode($response);
-          }
+                if ($stmt->execute()) {
+                    $response = ['status' => 1, 'message' => 'Record created successfully.'];
+                } else {
+                    $response = ['status' => 0, 'message' => 'Failed to create record.'];
+                }
+                echo json_encode($response);
+            }
+            if ($path[3] === 'filter') {
 
+                $sql = "SELECT p.id, p.name, p.price, p.amount, p.description, p.image FROM products p, category c
+                    WHERE p.id_category = c.id";
+                $var = 0;
 
+                if ($user->Bianca) {
+                    $sql .= " AND (c.name = 'Carne Bianca'";
+                    $var++;
+                }
+                if ($user->Rossa) {
+                    if ($var > 0) $sql .= " OR";
+                    else {
+                        $sql .= " AND (";
+                        $var++;
+                    }
+                    $sql .= " c.name = 'Carne Rossa'";
+                }
+                if ($user->Preparati) {
+                    if ($var > 0) $sql .= " OR";
+                    else {
+                        $sql .= " AND (";
+                        $var++;
+                    }
+                    $sql .= " c.name = 'Preparati'";
+                }
+                $sql .= ")";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                /*if ($stmt->execute()) {
+                    $response = ['status' => 1, 'message' => 'Record created successfully.'];
+                } else {
+                    $response = ['status' => 0, 'message' => 'Failed to create record.'];
+                }*/
+                echo json_encode($products);
+            }
         }
 
-        if($path[2] === 'user') {
+        if ($path[2] === 'user') {
 
-            if($path[3] === 'login'){
+            if ($path[3] === 'login') {
                 $sql = "SELECT * FROM clients";
                 $sql .= " WHERE email = :email AND password = :password";
                 $stmt = $conn->prepare($sql);
@@ -126,7 +146,7 @@ switch($method) {
                 echo json_encode($user);
             }
 
-            if($path[3] === 'save'){
+            if ($path[3] === 'save') {
                 $sql = "INSERT INTO clients(id, name, surname, email, password, address, city, telephone)
                 VALUES(null, :name, :surname, :email, :password, :address, :city, :telephone)";
                 $stmt = $conn->prepare($sql);
@@ -140,21 +160,20 @@ switch($method) {
                 $stmt->bindParam(':telephone', $user->telephone);
 
 
-                if($stmt->execute()) {
+                if ($stmt->execute()) {
                     $response = ['status' => 1, 'message' => 'Record created successfully.'];
                 } else {
                     $response = ['status' => 0, 'message' => 'Failed to create record.'];
                 }
                 echo json_encode($response);
             }
-
         }
 
 
         break;
 
     case "PUT":
-        $user = json_decode( file_get_contents('php://input') );
+        $user = json_decode(file_get_contents('php://input'));
         $sql = "UPDATE users SET name= :name, email =:email, mobile =:mobile, updated_at =:updated_at WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $updated_at = date('Y-m-d');
@@ -164,7 +183,7 @@ switch($method) {
         $stmt->bindParam(':mobile', $user->mobile);
         $stmt->bindParam(':updated_at', $updated_at);
 
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record updated successfully.'];
         } else {
             $response = ['status' => 0, 'message' => 'Failed to update record.'];
@@ -179,7 +198,7 @@ switch($method) {
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $path[3]);
 
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record deleted successfully.'];
         } else {
             $response = ['status' => 0, 'message' => 'Failed to delete record.'];
