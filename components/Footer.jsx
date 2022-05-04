@@ -14,22 +14,25 @@ const Footer = () => {
           </h2>
         </div>
         <div className={styles.card}>
-          <h1 className={styles.title}>FIND OUR BUTCHER'S SHOP</h1>
+          <h1 className={styles.title}>DOVE TROVARCI</h1>
           <p className={styles.text}>
             Via Generale Domenico Giglio, 33.
             <br /> TRAPANI TP, 91100
-            <br /> 0923547296
+            <br /> 0923-547296
           </p>
         </div>
         <div className={styles.card}>
-          <h1 className={styles.title}>WORKING HOURS</h1>
+          <h1 className={styles.title}>ORARIO DI APERTURA</h1>
           <p className={styles.text}>
-            MONDAY UNTIL FRIDAY
-            <br /> 8:00 – 20:00
+            DAL LUNEDì AL MERCOLEDì
+            <br /> 8:30 – 14:00
           </p>
           <p className={styles.text}>
-            SATURDAY - SUNDAY
-            <br /> 8:00 – 14:00
+            DAL GIOVEDì AL SABATO
+            <br /> 8:30 – 19:30
+          </p>
+          <p className={styles.text}>
+            DOMENICA CHIUSO
           </p>
         </div>
       </div>

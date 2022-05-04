@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "../styles/ProductCard.module.css";
 import Link from "next/link";
 import AddCart from "./AddCart";
+import Typography from '@mui/material/Typography';
 
 const ProductCard = ({ product, user }) => {
 
@@ -12,9 +13,9 @@ const ProductCard = ({ product, user }) => {
       
           <Image src={ `/image/${product.image}` } alt="" width="500" height="500" />
           
-          <h1 className={ styles.title }>{ product.name }</h1>
-          <span className={ styles.price }>€ { product.price } al kg</span>
-          <p className={ styles.desc }>Dettagli v</p>
+          <Typography variant="h6" gutterBottom>{ product.name }</Typography>
+          <Typography variant="overline" display="block" gutterBottom>€ { product.price } al kg</Typography>
+          <Typography variant="caption" display="block" gutterBottom>Dettagli v</Typography>
         </div>
       </Link>
       <AddCart product={ product }/>

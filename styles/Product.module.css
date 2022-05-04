@@ -1,7 +1,7 @@
 .container {
   height: calc(100vh - 100px);
   display: flex;
-
+  flex-wrap: wrap;
   text-align: center;
 }
 
@@ -14,8 +14,12 @@
 }
 
 .right {
+  display: flex;
+  flex-direction:column;
   flex: 1;
   padding: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .imgContainer {

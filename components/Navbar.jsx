@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "../styles/Navbar.module.css";
 import { useSelector } from "react-redux";
 import Link from "next/link";
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -28,6 +29,10 @@ const theme = createTheme({
         secondary: {
             main: '#fff',
         },
+        error: {
+            main: '#ef5350',
+            contrastText: '#fff',
+        },
     },
 });
 
@@ -36,7 +41,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 const Navbar = ({ user }) => {
-    const [label, setLabel] = React.useState(null);
+
     const quantity = useSelector((state) => state.cart.quantity);
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -60,10 +65,10 @@ const Navbar = ({ user }) => {
     function Autenticato() {
         return (
             <>
-            <Link href={`/usr/${user.usr}`} passHref>
-                <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Profilo</Typography>
-                </MenuItem>
+                <Link href={`/usr/${user.usr}`} passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Profilo</Typography>
+                    </MenuItem>
                 </Link>
                 <Link href="/usr/login" passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
@@ -95,15 +100,6 @@ const Navbar = ({ user }) => {
         );
     }
 
-    function Settings() {
-        //const utenteAutenticato = props.utenteAutenticato;
-        if (Number.isInteger(parseInt(user.usr))) {
-            setLabel("Profilo");
-            return <Autenticato />;
-        }
-        setLabel("Accedi");
-        return <NonAutenticato />;
-    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -117,7 +113,9 @@ const Navbar = ({ user }) => {
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         >
                             <Link href={`/?usr=${user.usr}`} passHref>
-                            <Image src="/image/logo.png" alt="" width="100px" height="100px" />
+                                <a>
+                                <Image src="/image/logo.png" alt="" width="100px" height="100px" />
+                                </a>
                             </Link>
                         </Typography>
 
@@ -160,7 +158,7 @@ const Navbar = ({ user }) => {
                                         <Typography textAlign="center">Prodotti</Typography>
                                     </MenuItem>
                                 </Link>
-                                <Link href="#contatti"passHref>
+                                <Link href="#contatti" passHref>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Contatti</Typography>
                                     </MenuItem>
@@ -174,7 +172,9 @@ const Navbar = ({ user }) => {
                             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                         >
                             <Link href={`/?usr=${user.usr}`} passHref>
-                            <Image src="/image/logo.png" alt="" width="100px" height="100px" />
+                                <a>
+                                <Image src="/image/logo.png" alt="" width="100px" height="100px" />
+                                </a>
                             </Link>
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -196,7 +196,7 @@ const Navbar = ({ user }) => {
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title={`${label}`}>
+                            <Tooltip title={Number.isInteger(parseInt(user.usr)) ? "Profilo" : "Accedi"}>
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <AccountCircleIcon color='secondary' fontSize="large" />
                                 </IconButton>
@@ -217,9 +217,7 @@ const Navbar = ({ user }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-
-                                <Settings />
-
+                                {Number.isInteger(parseInt(user.usr)) ? <Autenticato /> : <NonAutenticato />}
 
                             </Menu>
                             <Link href={`/cart?usr=${user.usr}`} passHref>

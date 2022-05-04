@@ -17,9 +17,19 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import Description from "../components/Description";
 import Button from '@mui/material/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#b7903c',
+      contrastText: '#fff',
+    },
+  },
+})
 
 export default function Home({ productList, user }) {
-  
+
   const [list, setList] = useState([]);
   const [count, setCount] = useState(true);
   const [close, setClose] = useState(true);
@@ -30,18 +40,19 @@ export default function Home({ productList, user }) {
   });
 
   const handleSubmit = (event) => {
-    if (filter.Bianca == false && filter.Rossa == false && filter.Preparati == false){
+    if (filter.Bianca == false && filter.Rossa == false && filter.Preparati == false) {
       setCount(true);
     }
     else {
       setCount(false);
-    }
-    event.preventDefault();
-    axios.post('http://localhost:80/api/products/filter', filter).then(function (response) {
+      event.preventDefault();
+      axios.post('http://localhost:80/api/products/filter', filter).then(function (response) {
 
-      console.log(response.data);
-      setList(response.data);
-    });
+        console.log(response.data);
+        setList(response.data);
+      });
+    }
+
 
   }
 
@@ -63,44 +74,45 @@ export default function Home({ productList, user }) {
       </Head>
       <Featured />
       <Description />
-      <Box sx={{ display: 'flex' }}>
-        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-          <FormLabel component="legend">Filtri</FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox checked={Bianca} onChange={handleChange} name="Bianca" />
-              }
-              label="Bianca"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={Rossa} onChange={handleChange} name="Rossa" />
-              }
-              label="Rossa"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={Preparati} onChange={handleChange} name="Preparati" />
-              }
-              label="Preparati"
-            />
-          </FormGroup>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleSubmit}
-          >
-            Applica
-          </Button>
+      <ThemeProvider theme={theme}>
+        <Box sx={{ display: 'flex',flexDirection: 'column', alignItems: 'center',}}>
+          <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+            <FormLabel component="legend">Filtri di ricerca</FormLabel>
+            <FormGroup sx={{flexDirection: 'row'}}>
+              <FormControlLabel
+                control={
+                  <Checkbox checked={Bianca} onChange={handleChange} name="Bianca" />
+                }
+                label="Bianca"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={Rossa} onChange={handleChange} name="Rossa" />
+                }
+                label="Rossa"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={Preparati} onChange={handleChange} name="Preparati" />
+                }
+                label="Preparati"
+              />
+            </FormGroup>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleSubmit}
+            >
+              Applica
+            </Button>
 
-        </FormControl>
+          </FormControl>
 
-      </Box>
-
-      <a name="prodotti">
+        </Box>
+      </ThemeProvider>
+      <a name="prodotti" id ="product">
         <ProductList productList={count ? productList : list} user={user} />
       </a>
       {!close && <Add setClose={setClose} />}

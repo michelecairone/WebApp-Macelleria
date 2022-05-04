@@ -93,7 +93,7 @@ const Login = ({user}) => {
               type="password"
               onChange={handleChange}
             />
-            {error && <span className={styles.error}>Wrong Credentials!</span>}
+            {error && <span className={styles.error}>Email o password errate!</span>}
             <Button
               type="submit"
               fullWidth
