@@ -18,10 +18,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Description from "../components/Description";
 import Button from '@mui/material/Button';
 
-let stringFilter = '';
-
 export default function Home({ productList, user }) {
-
+  
+  const [list, setList] = useState([]);
+  const [count, setCount] = useState(true);
   const [close, setClose] = useState(true);
   const [filter, setFilter] = useState({
     Bianca: false,
@@ -29,30 +29,27 @@ export default function Home({ productList, user }) {
     Preparati: false,
   });
 
-
-
   const handleSubmit = (event) => {
-
+    if (filter.Bianca == false && filter.Rossa == false && filter.Preparati == false){
+      setCount(true);
+    }
+    else {
+      setCount(false);
+    }
     event.preventDefault();
     axios.post('http://localhost:80/api/products/filter', filter).then(function (response) {
+
       console.log(response.data);
-
-
-
+      setList(response.data);
     });
 
   }
-
-
 
   const handleChange = (event) => {
     setFilter({
       ...filter,
       [event.target.name]: event.target.checked,
     });
-
-
-
   };
 
   const { Bianca, Rossa, Preparati } = filter;
@@ -104,7 +101,7 @@ export default function Home({ productList, user }) {
       </Box>
 
       <a name="prodotti">
-        <ProductList productList={productList} user={user} />
+        <ProductList productList={count ? productList : list} user={user} />
       </a>
       {!close && <Add setClose={setClose} />}
     </div>
