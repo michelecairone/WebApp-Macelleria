@@ -54,8 +54,12 @@ switch ($method) {
 
             $sql = "SELECT * FROM clients";
 
+<<<<<<< HEAD
             if (true) {
 
+=======
+            if (isset($path[3]) && is_numeric($path[3])) {
+>>>>>>> main
                 $sql .= " WHERE id = :id";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':id', $path[3]);
@@ -73,6 +77,60 @@ switch ($method) {
 
         $path = explode('/', $_SERVER['REQUEST_URI']);
         if ($path[2] === 'products') {
+
+          if ($path[3] === 'order') {
+
+              $sql = "INSERT INTO make(id_order, id_client, date_ord)
+              VALUES(null, :id_client, :date_ord)";
+
+              $stmt = $conn->prepare($sql);
+              $id_client = $user->id_client;
+              $stmt->bindParam(':id_client', $user->id_client);
+              $stmt->bindParam(':date_ord', $user-> date("Y-m-d h:i:s A"));
+              if ($stmt->execute()) {
+                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
+                  echo json_encode($response);
+              } else {
+                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
+                  echo json_encode($response);
+              }
+
+              $sql2 = "SELECT id_order FROM make WHERE id_client = '$user->id_client' AND date_ord = (SELECT MAX(date_ord) FROM MAKE WHERE id_client = $user->id_client) ";
+
+              $stmt = $conn->prepare($sql2);
+              $stmt->execute();
+              $id_order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+              $sql3 = "INSERT INTO orders(id, id_client, state, total)
+              VALUES('$id_order', '$id_client', :state, :total)";
+
+              $stmt = $conn->prepare($sql3);
+              $stmt->bindParam(':state', $user->state);
+              $stmt->bindParam(':total', $user-> total);
+              if ($stmt->execute()) {
+                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
+                  echo json_encode($response);
+              } else {
+                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
+                  echo json_encode($response);
+              }
+
+              $sql4 = "INSERT INTO shopping_cart(id_order, id_product, amount, total)
+              VALUES('$id_order', :id_product, :amount, :total)";
+
+              $stmt = $conn->prepare($sql4);
+              $stmt->bindParam(':id_product', $user->id_product);
+              $stmt->bindParam(':amount', $user->amount);
+              $stmt->bindParam(':total', $user->total);
+
+              if ($stmt->execute()) {
+                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
+                  echo json_encode($response);
+              } else {
+                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
+                  echo json_encode($response);
+              }
+          }
 
             if ($path[3] === 'save') {
                 $sql = "INSERT INTO products(id, name, price, amount, description, image, id_category)
@@ -123,11 +181,7 @@ switch ($method) {
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                /*if ($stmt->execute()) {
-                    $response = ['status' => 1, 'message' => 'Record created successfully.'];
-                } else {
-                    $response = ['status' => 0, 'message' => 'Failed to create record.'];
-                }*/
+
                 echo json_encode($products);
             }
         }
