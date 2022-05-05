@@ -54,12 +54,7 @@ switch ($method) {
 
             $sql = "SELECT * FROM clients";
 
-<<<<<<< HEAD
-            if (true) {
-
-=======
             if (isset($path[3]) && is_numeric($path[3])) {
->>>>>>> main
                 $sql .= " WHERE id = :id";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':id', $path[3]);
