@@ -65,9 +65,14 @@ const Navbar = ({ user }) => {
     function Autenticato() {
         return (
             <>
-                <Link href={`/usr/${user.usr}`} passHref>
+                <Link href={`/usr/${user.usr}?usr=${user.usr}`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Profilo</Typography>
+                    </MenuItem>
+                </Link>
+                <Link href={`/usr/${user.usr}?usr=${user.usr}`} passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Ordini</Typography>
                     </MenuItem>
                 </Link>
                 <Link href="/usr/login" passHref>

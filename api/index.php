@@ -54,8 +54,9 @@ switch ($method) {
         if ($path[2] === 'user') {
 
             $sql = "SELECT * FROM clients";
-
-            if (isset($path[3]) && is_numeric($path[3])) {
+            
+            if (true) {
+            
                 $sql .= " WHERE id = :id";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':id', $path[3]);
@@ -123,7 +124,11 @@ switch ($method) {
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-               
+                /*if ($stmt->execute()) {
+                    $response = ['status' => 1, 'message' => 'Record created successfully.'];
+                } else {
+                    $response = ['status' => 0, 'message' => 'Failed to create record.'];
+                }*/
                 echo json_encode($products);
             }
         }
