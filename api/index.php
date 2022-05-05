@@ -26,8 +26,7 @@ switch ($method) {
                 $stmt->bindParam(':id', $path[3]);
                 $stmt->execute();
                 $products = $stmt->fetch(PDO::FETCH_ASSOC);
-            }
-            else {
+            } else {
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -54,9 +53,9 @@ switch ($method) {
         if ($path[2] === 'user') {
 
             $sql = "SELECT * FROM clients";
-            
+
             if (true) {
-            
+
                 $sql .= " WHERE id = :id";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':id', $path[3]);
@@ -175,21 +174,31 @@ switch ($method) {
 
     case "PUT":
         $user = json_decode(file_get_contents('php://input'));
-        $sql = "UPDATE users SET name= :name, email =:email, mobile =:mobile, updated_at =:updated_at WHERE id = :id";
-        $stmt = $conn->prepare($sql);
-        $updated_at = date('Y-m-d');
-        $stmt->bindParam(':id', $user->id);
-        $stmt->bindParam(':name', $user->name);
-        $stmt->bindParam(':email', $user->email);
-        $stmt->bindParam(':mobile', $user->mobile);
-        $stmt->bindParam(':updated_at', $updated_at);
+        $path = explode('/', $_SERVER['REQUEST_URI']);
+        if ($path[2] === 'user') {
+            if (isset($path[3]) && is_numeric($path[3]) && isset($path[4]) && ($path[4] === 'edit')) {
+                $sql = "UPDATE clients 
+                        SET name= :name, surname = :surname, address = :address, city= :city, email =:email, telephone =:telephone WHERE clients.id = :id";
+                $stmt = $conn->prepare($sql);
 
-        if ($stmt->execute()) {
-            $response = ['status' => 1, 'message' => 'Record updated successfully.'];
-        } else {
-            $response = ['status' => 0, 'message' => 'Failed to update record.'];
+                $stmt->bindParam(':id', $user->id);
+                $stmt->bindParam(':name', $user->name);
+                $stmt->bindParam(':surname', $user->surname);
+                $stmt->bindParam(':address', $user->address);
+                $stmt->bindParam(':city', $user->city);
+                $stmt->bindParam(':email', $user->email);
+                $stmt->bindParam(':telephone', $user->telephone);
+
+
+                if ($stmt->execute()) {
+                    $response = ['status' => 1, 'message' => 'Record updated successfully.'];
+                } else {
+                    $response = ['status' => 0, 'message' => 'Failed to update record.'];
+                }
+                echo json_encode($response);
+            }
         }
-        echo json_encode($response);
+
         break;
 
     case "DELETE":
