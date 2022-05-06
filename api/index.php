@@ -79,52 +79,54 @@ switch ($method) {
               VALUES(null, :id_client, :date_ord)";
 
               $stmt = $conn->prepare($sql);
+
               $id_client = $user->id_client;
-              $stmt->bindParam(':id_client', $user->id_client);
-              $stmt->bindParam(':date_ord', $user-> date("Y-m-d h:i:s A"));
-              if ($stmt->execute()) {
-                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
-                  echo json_encode($response);
-              } else {
-                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
-                  echo json_encode($response);
-              }
+              $data = date("Y-m-d h:i:s");
 
-              $sql2 = "SELECT id_order FROM make WHERE id_client = '$user->id_client' AND date_ord = (SELECT MAX(date_ord) FROM MAKE WHERE id_client = $user->id_client) ";
+              $stmt->bindParam(':id_client', $id_client);
+              $stmt->bindParam(':date_ord', $data );
+              $rst = $stmt->execute();
 
-              $stmt = $conn->prepare($sql2);
-              $stmt->execute();
-              $id_order = $stmt->fetch(PDO::FETCH_ASSOC);
+              $objDb2 = new DbConnect;
+              $conn2 = $objDb2->connect();
+              $sql2 = 'SELECT id_order FROM make WHERE id_client = :id_client AND date_ord = (SELECT MAX(date_ord) FROM MAKE WHERE id_client = :id_client) ';
 
-              $sql3 = "INSERT INTO orders(id, id_client, state, total)
-              VALUES('$id_order', '$id_client', :state, :total)";
+              $stmt2 = $conn2->prepare($sql2);
+              $stmt2->bindParam(':id_client', $id_client);
+              $stmt2->execute();
+              $id_order = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-              $stmt = $conn->prepare($sql3);
-              $stmt->bindParam(':state', $user->state);
-              $stmt->bindParam(':total', $user-> total);
-              if ($stmt->execute()) {
-                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
-                  echo json_encode($response);
-              } else {
-                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
-                  echo json_encode($response);
-              }
+              $objDb3 = new DbConnect;
+              $conn3 = $objDb3->connect();
+              $sql3 = "INSERT INTO orders(id, state, total)
+              VALUES(:id_order, :state, :total)";
+              $pp = "da settare";
+              $stmt3 = $conn3->prepare($sql3);
+              $stmt3->bindParam(':id_order', $id_order["id_order"]);
+              $stmt3->bindParam(':state', $pp);
+              $stmt3->bindParam(':total', $user-> cart_total);
+              $rst2 = $stmt3->execute();
 
-              $sql4 = "INSERT INTO shopping_cart(id_order, id_product, amount, total)
-              VALUES('$id_order', :id_product, :amount, :total)";
+              $prodotti = $user -> products;
 
-              $stmt = $conn->prepare($sql4);
-              $stmt->bindParam(':id_product', $user->id_product);
-              $stmt->bindParam(':amount', $user->amount);
-              $stmt->bindParam(':total', $user->total);
+              foreach($prodotti as $prodotto) {
 
-              if ($stmt->execute()) {
-                  $response = ['status' => 1, 'message' => 'Record created successfully.'];
-                  echo json_encode($response);
-              } else {
-                  $response = ['status' => 0, 'message' => 'Failed to create record.'];
-                  echo json_encode($response);
-              }
+                $objDb4 = new DbConnect;
+                $conn4 = $objDb4->connect();
+
+                $sql4 = "INSERT INTO shopping_cart(id_order, id_product, amount, total)
+                VALUES(:id_order, :id_product, :amount, :total)";
+
+                $stmt4 = $conn4->prepare($sql4);
+                $total = ($prodotto -> quantity * $prodotto -> price);
+                $stmt4->bindParam(':id_order', $id_order["id_order"]);
+                $stmt4->bindParam(':id_product', $prodotto -> id);
+                $stmt4->bindParam(':amount', $prodotto -> quantity);
+                $stmt4->bindParam(':total', $total);
+
+                $rst3 = $stmt4->execute();
+                echo json_encode($rst3);
+            }
           }
 
             if ($path[3] === 'save') {
@@ -226,7 +228,7 @@ switch ($method) {
         $path = explode('/', $_SERVER['REQUEST_URI']);
         if ($path[2] === 'user') {
             if (isset($path[3]) && is_numeric($path[3]) && isset($path[4]) && ($path[4] === 'edit')) {
-                $sql = "UPDATE clients 
+                $sql = "UPDATE clients
                         SET name= :name, surname = :surname, address = :address, city= :city, email =:email, telephone =:telephone WHERE clients.id = :id";
                 $stmt = $conn->prepare($sql);
 

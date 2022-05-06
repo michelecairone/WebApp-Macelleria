@@ -5,19 +5,31 @@ import Link from "next/link";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function LogMenu({ user, cart }) {
 
     const [logged, setLogged] = useState(null);
 
-    console.log("prima di LOgMEnu");
-    console.log(cart);
-    console.log("dopo di LOGMENU");
+    const [inputs, setInputs] = useState([]);
 
-   /* cart.products.map((product) => (
-        console.log(product)))*/
+    
+    const createOrder = async () => {
+       
+        setInputs(({
+            id_client: parseInt(user.usr),
+            cart_total: cart.total,
+            products: cart.products,
+            
+        }));
 
+        const res = await axios.post('http://localhost:80/api/products/order', inputs);{
+            console.log(res.data);
+          
 
+        };
+    }
+   
     async function verifyUser() {
         let id_user = (parseInt(user.usr));
         console.log("prima di id_user");
@@ -43,16 +55,7 @@ export default function LogMenu({ user, cart }) {
         return (
             <>
                 <div className={style.right}>
-                    <Popup trigger={<button className={style.button}> SEI LOGGATO </button>}
-                        position="bottom">
-                        <p> Per poter effettuare l'ordine bisogna <br />
-                            <span className={styles.price}> <Link href="/usr/login" passHref>Accedere</Link></span>
-                            <br />
-                            o
-                            <br />
-                            <span className={styles.price}> <Link href="/usr/register" passHref>Registrarsi</Link> </span>
-                        </p>
-                    </Popup>
+                    <button className={style.button} onClick={() => createOrder()}> Effettua Ordine </button>
                 </div>
             </>
         )
