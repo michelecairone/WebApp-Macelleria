@@ -11,6 +11,7 @@ const Add = ({ setClose }) => {
 
     axios.post('http://localhost:80/api/products/save', inputs).then(function (response) {
       console.log(response.data);
+      setClose(true);
     });
 
   }

@@ -1,20 +1,25 @@
 import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
-import styles from "../../styles/Admin.module.css";
+import styles from "../../../styles/Admin.module.css";
+import style from "../../../styles/Add.module.css";
+import { useRouter } from "next/router";
+import Add from "../../../components/Add";
+import AddButton from "../../../components/Add";
 
 const Index = ({ orders, products }) => {
-  const [pizzaList, setPizzaList] = useState(products);
+
+  const [close, setClose] = useState(true);
+  const [productList, setProductList] = useState(products);
   const [orderList, setOrderList] = useState(orders);
-  const status = ["preparing", "on the way", "delivered"];
+  const status = ["in preparazione", "per strada", "in consegna"];
 
   const handleDelete = async (id) => {
-    console.log(id);
+
     try {
-      const res = await axios.delete(
-        "http://localhost:3000/api/products/" + id
-      );
-      setPizzaList(pizzaList.filter((pizza) => pizza._id !== id));
+      await axios.delete("http://localhost:80/api/products/" + id);
+      setProductList(productList.filter((product) => product._id !== id));
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -40,69 +45,73 @@ const Index = ({ orders, products }) => {
   return (
     <div className={styles.container}>
       <div className={styles.item}>
-        <h1 className={styles.title}>Products</h1>
+        <button onClick={() => setClose(true)} className={style.mainAddButton}>
+          Aggiungi un nuovo prodotto
+        </button>
+        <h1 className={styles.title}>Prodotti </h1>
         <table className={styles.table}>
           <tbody>
             <tr className={styles.trTitle}>
-              <th>Image</th>
+              <th>Immagine</th>
               <th>Id</th>
-              <th>Title</th>
-              <th>Price</th>
-              <th>Action</th>
+              <th>Nome</th>
+              <th>Prezzo</th>
+              <th>Azione</th>
             </tr>
           </tbody>
-          {pizzaList.map((product) => (
-            <tbody key={product._id}>
+          {productList.map((product) => (
+            <tbody key={product.id}>
               <tr className={styles.trTitle}>
                 <td>
                   <Image
-                    src={product.img}
+                    src={`/image/${product.image}`}
                     width={50}
                     height={50}
                     objectFit="cover"
                     alt=""
                   />
                 </td>
-                <td>{product._id.slice(0, 5)}...</td>
-                <td>{product.title}</td>
-                <td>${product.prices[0]}</td>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td>{product.price}€</td>
                 <td>
-                  <button className={styles.button}>Edit</button>
+                  <button className={styles.button}>Modifica</button>
                   <button
                     className={styles.button}
-                    onClick={() => handleDelete(product._id)}
+                    onClick={() => handleDelete(product.id)}
                   >
-                    Delete
+                    Cancella
                   </button>
                 </td>
               </tr>
             </tbody>
           ))}
         </table>
+        {!close && <Add setClose={setClose} />}
       </div>
       <div className={styles.item}>
-        <h1 className={styles.title}>Orders</h1>
+        <h1 className={styles.title}>Ordini</h1>
         <table className={styles.table}>
           <tbody>
             <tr className={styles.trTitle}>
               <th>Id</th>
-              <th>Customer</th>
-              <th>Total</th>
-              <th>Payment</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Cliente</th>
+              <th>Totale</th>
+              <th>Pagamento</th>
+              <th>Stato</th>
+              <th>Azione</th>
             </tr>
           </tbody>
           {orderList.map((order) => (
-            <tbody key={order._id}>
+            <tbody key={order.id_order}>
               <tr className={styles.trTitle}>
-                <td>{order._id.slice(0, 5)}...</td>
-                <td>{order.customer}</td>
-                <td>${order.total}</td>
+                <td>{order.id_order}</td>
+                <td>{order.name} {order.surname}</td>
+                <td>{order.total}€</td>
                 <td>
-                  {order.method === 0 ? <span>cash</span> : <span>paid</span>}
+                  {order.date_ord /*order.method === 0 ? <span>cash</span> : <span>paid</span>*/}
                 </td>
-                <td>{status[order.status]}</td>
+                <td>{order.state}</td>
                 <td>
                   <button onClick={() => handleStatus(order._id)}>
                     Next Stage
@@ -118,7 +127,7 @@ const Index = ({ orders, products }) => {
 };
 
 export const getServerSideProps = async (ctx) => {
-  const myCookie = ctx.req?.cookies || "";
+  /*const myCookie = ctx.req?.cookies || "";
 
   if (myCookie.token !== process.env.TOKEN) {
     return {
@@ -127,10 +136,10 @@ export const getServerSideProps = async (ctx) => {
         permanent: false,
       },
     };
-  }
+  }*/
 
-  const productRes = await axios.get("http://localhost:3000/api/products");
-  const orderRes = await axios.get("http://localhost:3000/api/orders");
+  const productRes = await axios.get("http://localhost:80/api/products");
+  const orderRes = await axios.get("http://localhost:80/api/admin/orders");
 
   return {
     props: {

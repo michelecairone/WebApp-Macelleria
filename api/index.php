@@ -26,7 +26,8 @@ switch ($method) {
                 $stmt->bindParam(':id', $path[3]);
                 $stmt->execute();
                 $products = $stmt->fetch(PDO::FETCH_ASSOC);
-            } else {
+            }
+            else {
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,6 +65,21 @@ switch ($method) {
                 echo json_encode("errore utente non trovato");
             }
             echo json_encode($users);
+        }
+        if ($path[2] === 'admin') {
+
+            if ($path[3]=== 'orders')  {
+              $sql = 'SELECT id_order, name, surname, state, date_ord, total
+                      FROM clients c, orders o, make m
+                      WHERE m.id_order = o.id
+                      AND m.id_client = c.id';
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                echo json_encode("errore utente non trovato");
+            }
+            echo json_encode($orders);
         }
 
         break;
@@ -126,9 +142,9 @@ switch ($method) {
 
                 $rst3 = $stmt4->execute();
                 echo json_encode($rst3);
-            }
-          }
+              }
 
+          }
             if ($path[3] === 'save') {
                 $sql = "INSERT INTO products(id, name, price, amount, description, image, id_category)
               VALUES(null, :name, :price, :amount, :description, :image, :id_category)";
@@ -249,21 +265,48 @@ switch ($method) {
                 echo json_encode($response);
             }
         }
+        if ($path[2] === 'product') {
+
+            if (isset($path[3]) && is_numeric($path[3]) && isset($path[4]) && ($path[4] === 'edit')) {
+                $sql = "UPDATE products
+                        SET name= :name, price = :price, amount = :amount, description= :description, image =:image, id_category =:id_category WHERE clients.id = :id";
+                $stmt = $conn->prepare($sql);
+
+                $stmt->bindParam(':id', $path[3]);
+                $stmt->bindParam(':name', $user->name);
+                $stmt->bindParam(':price', $user->price);
+                $stmt->bindParam(':amount', $user->amount);
+                $stmt->bindParam(':description', $user->description);
+                $stmt->bindParam(':image', $user->image);
+                $stmt->bindParam(':id_category', $user->id_category);
+
+
+                if ($stmt->execute()) {
+                    $response = ['status' => 1, 'message' => 'Record updated successfully.'];
+                } else {
+                    $response = ['status' => 0, 'message' => 'Failed to update record.'];
+                }
+                echo json_encode($response);
+            }
+        }
 
         break;
 
     case "DELETE":
-        $sql = "DELETE FROM users WHERE id = :id";
         $path = explode('/', $_SERVER['REQUEST_URI']);
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $path[3]);
+        if ($path[2] === 'products') {
 
-        if ($stmt->execute()) {
-            $response = ['status' => 1, 'message' => 'Record deleted successfully.'];
-        } else {
-            $response = ['status' => 0, 'message' => 'Failed to delete record.'];
+            $sql = "DELETE FROM products WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $path[3]);
+
+            if ($stmt->execute()) {
+                $response = ['status' => 1, 'message' => 'Record deleted successfully.'];
+            } else {
+                $response = ['status' => 0, 'message' => 'Failed to delete record.'];
+            }
+            echo json_encode($response);
+            break;
         }
-        echo json_encode($response);
-        break;
 }
