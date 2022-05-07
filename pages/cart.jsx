@@ -150,9 +150,6 @@ const Cart = ({ user }) => {
             ))}
           </tbody>
         </table>
-        <Button color="error" onClick={handleDelete(77)}>
-                      <ClearIcon />
-                    </Button>
       </div>
       <div className={styles.right}>
         <div className={styles.wrapper}>
