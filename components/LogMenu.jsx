@@ -11,17 +11,21 @@ export default function LogMenu({ user, cart }) {
 
     const [logged, setLogged] = useState(null);
 
-    const [inputs, setInputs] = useState([]);
+    const [inputs, setInputs] = useState({
+        id_client: parseInt(user.usr),
+            cart_total: cart.total,
+            products: cart.products,
+    });
 
     
     const createOrder = async () => {
        
-        setInputs(({
+        /*setInputs(({
             id_client: parseInt(user.usr),
             cart_total: cart.total,
             products: cart.products,
             
-        }));
+        }));*/
 
         const res = await axios.post('http://localhost:80/api/products/order', inputs);{
             console.log(res.data);

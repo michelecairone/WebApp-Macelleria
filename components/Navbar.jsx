@@ -70,7 +70,7 @@ const Navbar = ({ user }) => {
                         <Typography textAlign="center">Profilo</Typography>
                     </MenuItem>
                 </Link>
-                <Link href={`/usr/${user.usr}?usr=${user.usr}`} passHref>
+                <Link href={`/usr/${user.usr}/orders?usr=${user.usr}`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Ordini</Typography>
                     </MenuItem>
