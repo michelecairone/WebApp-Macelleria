@@ -52,15 +52,30 @@ switch ($method) {
             echo json_encode($orders);
         }
         if ($path[2] === 'user') {
-
-            $sql = "SELECT * FROM clients";
-
             if (isset($path[3]) && is_numeric($path[3])) {
-                $sql .= " WHERE id = :id";
-                $stmt = $conn->prepare($sql);
-                $stmt->bindParam(':id', $path[3]);
-                $stmt->execute();
-                $users = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (isset($path[4]) && ($path[4] === 'orders')) {
+                    if (isset($path[5]) && is_numeric($path[5])) {
+                        $sql = "SELECT p.id, p.name, p.image, s.amount, s.total FROM products p, shopping_cart s
+                        WHERE p.id = s.id_product AND s.id_order = :id ";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':id', $path[5]);
+                        $stmt->execute();
+                        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        $sql = "SELECT id_order, date_ord FROM make where id_client = :id";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':id', $path[3]);
+                        $stmt->execute();
+                        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    }
+                } else {
+                    $sql = "SELECT * FROM clients";
+                    $sql .= " WHERE id = :id";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':id', $path[3]);
+                    $stmt->execute();
+                    $users = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
             } else {
                 echo json_encode("errore utente non trovato");
             }
