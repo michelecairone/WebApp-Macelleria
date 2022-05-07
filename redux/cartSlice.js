@@ -24,6 +24,18 @@ const cartSlice = createSlice({
       }
       state.total += action.payload.price * action.payload.quantity;   
     },
+    rmvProduct: (state, action) => {
+      
+      const found = state.products.find(product => product.id == action.payload.id);
+     
+      if (found !== undefined) {
+        const index = state.products.indexOf(found);
+        state.products.splice(index, 1);
+        state.quantity -= 1;
+        state.total -= (action.payload.price * action.payload.quantity) ;   
+      }
+     
+    },
     reset: (state) => {
       state.products = [];
       state.quantity = 0;
@@ -32,5 +44,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addProduct, reset } = cartSlice.actions;
+export const { addProduct, rmvProduct, reset } = cartSlice.actions;
 export default cartSlice.reducer;

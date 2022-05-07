@@ -14,6 +14,7 @@ import OrderDetail from "../components/OrderDetail";
 import LogMenu from "../components/LogMenu";
 import ClearIcon from '@mui/icons-material/Clear';
 import Button from '@mui/material/Button';
+import { rmvProduct } from "../redux/cartSlice";
 
 const Cart = ({ user }) => {
 
@@ -27,16 +28,9 @@ const Cart = ({ user }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const createOrder = async (data) => {
-    try {
-      const res = await axios.post("http://localhost:3000/api/orders", data);
-      if (res.status === 201) {
-        dispatch(reset());
-        router.push(`/orders/${res.data._id}`);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const deleteProduct = (id) => {
+    console.log(id);
+    dispatch(rmvProduct(id));
   };
 
   // Custom component to wrap the PayPalButtons and handle currency changes
@@ -55,6 +49,7 @@ const Cart = ({ user }) => {
       });
     }, [currency, showSpinner]);
 
+    
     return (
       <>
         {showSpinner && isPending && <div className="spinner" />}
@@ -95,10 +90,6 @@ const Cart = ({ user }) => {
       </>
     );
   };
-
-  function handleDelete(id) {
-    console.log(id);
-  }
 
   return (
     <div className={styles.container}>
@@ -141,7 +132,7 @@ const Cart = ({ user }) => {
                 </td>
                 <td>
                   <span>
-                    <Button color="error" onClick={handleDelete(product.id)}>
+                    <Button color="error" onClick={() => deleteProduct(product)}> 
                       <ClearIcon />
                     </Button>
                   </span>

@@ -12,7 +12,8 @@ export default function LogMenu({ user, cart }) {
     const [logged, setLogged] = useState(null);
 
     const [inputs, setInputs] = useState({
-        id_client: parseInt(user.usr),
+        
+            id_client: parseInt(user.usr),
             cart_total: cart.total,
             products: cart.products,
     });

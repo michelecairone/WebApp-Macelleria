@@ -22,8 +22,6 @@ const Product = ({product}) => {
         <br/>
         <br />
         <Typography variant="h6" gutterBottom>Scegli la quantità</Typography>
-
-        
         <AddCart product={ product }/>
       </div>
     </div>
