@@ -16,13 +16,13 @@
 .button {
   border: none;
   color: white;
-  padding: 5px;
+  padding: 3px;
   cursor: pointer;
 }
 
 .button:first-child {
   background-color: teal;
-  margin-right: 10px;
+  margin-right: 8px;
 }
 
 .button:last-child {

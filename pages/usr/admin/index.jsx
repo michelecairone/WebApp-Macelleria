@@ -1,4 +1,5 @@
 import axios from "axios";
+import React from "react";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "../../../styles/Admin.module.css";
@@ -6,9 +7,15 @@ import style from "../../../styles/Add.module.css";
 import { useRouter } from "next/router";
 import Add from "../../../components/Add";
 import AddButton from "../../../components/Add";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import AddProduct from "../../../components/AddProduct";
+import UpdateProduct from "../../../components/UpdateProduct";
 
-const Index = ({ orders, products }) => {
 
+export default function Index({ orders, products }) {
+
+  const [modalOpen, setModalOpen] = React.useState(false);
   const [close, setClose] = useState(true);
   const [productList, setProductList] = useState(products);
   const [orderList, setOrderList] = useState(orders);
@@ -25,6 +32,7 @@ const Index = ({ orders, products }) => {
     }
   };
 
+  
   const handleStatus = async (id) => {
     const item = orderList.filter((order) => order._id === id)[0];
     const currentStatus = item.status;
@@ -43,86 +51,87 @@ const Index = ({ orders, products }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.item}>
-        <button onClick={() => setClose(true)} className={style.mainAddButton}>
-          Aggiungi un nuovo prodotto
-        </button>
-        <h1 className={styles.title}>Prodotti </h1>
-        <table className={styles.table}>
-          <tbody>
-            <tr className={styles.trTitle}>
-              <th>Immagine</th>
-              <th>Id</th>
-              <th>Nome</th>
-              <th>Prezzo</th>
-              <th>Azione</th>
-            </tr>
-          </tbody>
-          {productList.map((product) => (
-            <tbody key={product.id}>
+    <>
+      <div className={styles.container}>
+        
+        <div className={styles.item}>
+          <h1 className={styles.title}>Prodotti </h1>
+          <AddProduct/>
+          <table className={styles.table}>
+            <tbody>
               <tr className={styles.trTitle}>
-                <td>
-                  <Image
-                    src={`/image/${product.image}`}
-                    width={50}
-                    height={50}
-                    objectFit="cover"
-                    alt=""
-                  />
-                </td>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}€</td>
-                <td>
-                  <button className={styles.button}>Modifica</button>
-                  <button
-                    className={styles.button}
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    Cancella
-                  </button>
-                </td>
+                <th>Immagine</th>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Prezzo</th>
+                <th>Azione</th>
               </tr>
             </tbody>
-          ))}
-        </table>
-        {!close && <Add setClose={setClose} />}
-      </div>
-      <div className={styles.item}>
-        <h1 className={styles.title}>Ordini</h1>
-        <table className={styles.table}>
-          <tbody>
-            <tr className={styles.trTitle}>
-              <th>Id</th>
-              <th>Cliente</th>
-              <th>Totale</th>
-              <th>Pagamento</th>
-              <th>Stato</th>
-              <th>Azione</th>
-            </tr>
-          </tbody>
-          {orderList.map((order) => (
-            <tbody key={order.id_order}>
+            {productList.map((product) => (
+              <tbody key={product.id}>
+                <tr className={styles.trTitle}>
+                  <td>
+                    <Image
+                      src={`/image/${product.image}`}
+                      width={50}
+                      height={50}
+                      objectFit="cover"
+                      alt=""
+                    />
+                  </td>
+                  <td>{product.id}</td>
+                  <td>{product.name}</td>
+                  <td>{product.price}€</td>
+                  <td>
+                    <UpdateProduct product={product}/>
+                    <button
+                      className={styles.button}
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      Cancella
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+          </table>
+          {!close && <Add setClose={setClose} />}
+        </div>
+        <div className={styles.item}>
+          <h1 className={styles.title}>Ordini</h1>
+          <table className={styles.table}>
+            <tbody>
               <tr className={styles.trTitle}>
-                <td>{order.id_order}</td>
-                <td>{order.name} {order.surname}</td>
-                <td>{order.total}€</td>
-                <td>
-                  {order.date_ord /*order.method === 0 ? <span>cash</span> : <span>paid</span>*/}
-                </td>
-                <td>{order.state}</td>
-                <td>
-                  <button onClick={() => handleStatus(order._id)}>
-                    Next Stage
-                  </button>
-                </td>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Totale</th>
+                <th>Pagamento</th>
+                <th>Stato</th>
+                <th>Azione</th>
               </tr>
             </tbody>
-          ))}
-        </table>
+            {orderList.map((order) => (
+              <tbody key={order.id_order}>
+                <tr className={styles.trTitle}>
+                  <td>{order.id_order}</td>
+                  <td>{order.name} {order.surname}</td>
+                  <td>{order.total}€</td>
+                  <td>
+                    {order.date_ord /*order.method === 0 ? <span>cash</span> : <span>paid</span>*/}
+                  </td>
+                  <td>{order.state}</td>
+                  <td>
+                    <button onClick={() => handleStatus(order._id)}>
+                      Next Stage
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -149,4 +158,4 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-export default Index;
+
