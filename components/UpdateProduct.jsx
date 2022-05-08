@@ -51,9 +51,9 @@ export default function UpdateProduct({ product }) {
         setInputs(values => ({ ...values, [name]: value }));
     }
 
-    function handleSave() {
+    const handleSave = async() => {
 
-        axios.put(`http://localhost:80/api/product/${product.id}/edit`, inputs).then(function (response) {
+        await axios.put(`http://localhost:80/api/product/${product.id}/edit`, inputs).then(function (response) {
             console.log(response.data); 
         });
     }
