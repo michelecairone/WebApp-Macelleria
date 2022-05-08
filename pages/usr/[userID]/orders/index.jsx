@@ -33,6 +33,10 @@ export default function Orders({ user, orders }) {
                                     <Typography variant="h7" component="div">
                                         Data: {ord.date_ord}
                                     </Typography>
+                                    
+                                    <Typography variant="h7" component="div">
+                                       Stato: {ord.state}
+                                    </Typography>
 
 
                                 </CardContent>
