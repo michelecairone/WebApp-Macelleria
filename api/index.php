@@ -282,7 +282,7 @@ switch ($method) {
 
             if (isset($path[3]) && is_numeric($path[3]) && isset($path[4]) && ($path[4] === 'edit')) {
                 $sql = "UPDATE products
-                        SET name= :name, price = :price, amount = :amount, description= :description, image =:image, id_category =:id_category WHERE clients.id = :id";
+                        SET name= :name, price = :price, amount = :amount, description= :description, image =:image, id_category =:id_category WHERE products.id = :id";
                 $stmt = $conn->prepare($sql);
 
                 $stmt->bindParam(':id', $path[3]);
