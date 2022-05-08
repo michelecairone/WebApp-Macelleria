@@ -8,7 +8,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import * as React from 'react';
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styles from "../styles/Admin.module.css";
@@ -42,38 +41,21 @@ const style = {
 export default function UpdateProduct({ product }) {
 
     const [open, setOpen] = React.useState(false);
-    const [read, setRead] = React.useState(true);
-   
     const [inputs, setInputs] = useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const router = useRouter();
-    console.log(product);
-
-   
-    function handleModify() {
-        (read) ?
-            setRead(false) : setRead(true);
-    }
-    function handleSave() {
-        console.log(inputs);
-        axios.put(`http://localhost:80/api/user/${profile.id}/edit`, inputs).then(function (response) {
-            console.log(response.data);
-            if (response.data.status == 1) {
-                setRead(true);
-                router.push(`/usr/${profile.id}?usr=${profile.id}`);
-            }
-
-        });
-
-    }
-
-   
-
+    
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }));
+    }
+
+    function handleSave() {
+
+        axios.put(`http://localhost:80/api/product/${product.id}/edit`, inputs).then(function (response) {
+            console.log(response.data); 
+        });
     }
 
     return (
@@ -109,16 +91,18 @@ export default function UpdateProduct({ product }) {
                                             <TextField
                                                 name="name"
                                                 type="text"
+                                                defaultValue={`${product.name}`}
                                                 required
                                                 fullWidth
                                                 label="Nome"
-
                                                 onChange={handleChange}
                                             />
                                         </Grid>
                                         <Grid item xs={15} sm={6}>
                                             <TextField
                                                 name="image"
+                                                type="text"
+                                                defaultValue={`${product.image}`}
                                                 required
                                                 fullWidth
                                                 label="Percorso foto"
@@ -128,21 +112,25 @@ export default function UpdateProduct({ product }) {
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
+                                                type="text"
                                                 required
                                                 fullWidth
                                                 size='large'
                                                 label="Descrizione"
                                                 name="description"
+                                                defaultValue={`${product.description}`}
                                                 rows={10}
                                                 onChange={handleChange}
                                             />
                                         </Grid>
                                         <Grid item xs={6} sm={5}>
                                             <TextField
+                                                type="tel"
                                                 required
                                                 fullWidth
                                                 label="Prezzo al Kg"
                                                 name="price"
+                                                defaultValue={`${product.price}`}
                                                 onChange={handleChange}
                                             />
                                         </Grid>
@@ -152,70 +140,58 @@ export default function UpdateProduct({ product }) {
                                                 fullWidth
                                                 label="Quantità"
                                                 name="amount"
+                                                defaultValue={`${product.amount}`}
                                                 type="tel"
                                                 onChange={handleChange}
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={5}>
                                             <TextField
+                                                type="tel"
                                                 required
                                                 fullWidth
                                                 label="categoria"
                                                 name="id_category"
+                                                defaultValue={`${product.id_category}`}
                                                 onChange={handleChange}
                                             />
                                         </Grid>
                                     </Grid>
-                                    {(read == true) ?
+                                    <Box
+                                        sx={{
+
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between'
+
+                                        }}>
                                         <Button
                                             type="submit"
-
                                             variant="contained"
-                                            sx={{ mt: 3, mb: 2 }}
-                                            onClick={handleModify}
+                                            sx={{ mt: 3, mb: 2, order: 2 }}
+                                            onClick={handleSave}
 
                                         >
-                                            Modifica
-                                        </Button> :
-                                        <Box
-                                            sx={{
+                                            Salva
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            variant="outlined"
+                                            sx={{ mt: 3, mb: 2, order: 1 }}
+                                            onClick={handleClose}
 
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between'
-
-                                            }}>
-                                            <Button
-                                                type="submit"
-                                                variant="contained"
-                                                sx={{ mt: 3, mb: 2, order: 2 }}
-                                                onClick={handleSave}
-
-                                            >
-                                                Salva
-                                            </Button>
-                                            <Button
-                                                type="submit"
-                                                variant="outlined"
-                                                sx={{ mt: 3, mb: 2, order: 1 }}
-                                                onClick={handleModify}
-
-                                            >
-                                                Annulla
-                                            </Button>
-                                        </Box>
-
-                                    }
-
-
+                                        >
+                                            Annulla
+                                        </Button>
+                                    </Box>
                                 </Box>
-
                             </Box>
                         </Container>
                     </ThemeProvider>
                 </Box>
             </Modal>
-        </>);
+        </>
+    );
 
 }
