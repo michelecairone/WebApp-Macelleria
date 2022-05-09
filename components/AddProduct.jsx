@@ -70,7 +70,11 @@ export default function AddProduct() {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Aggiungi Prodotto</Button>
+            <ThemeProvider theme={theme}>
+                <Button variant="outlined" size="small" onClick={handleOpen}>
+                    Aggiungi Prodotto
+                </Button>  
+            </ThemeProvider>
             <Modal
                 open={open}
                 onClose={handleClose}

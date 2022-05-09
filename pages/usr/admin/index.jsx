@@ -11,28 +11,25 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import AddProduct from "../../../components/AddProduct";
 import UpdateProduct from "../../../components/UpdateProduct";
+import Link from "next/link";
+import Typography from '@mui/material/Typography';
+import { Button } from "@mui/material";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#b7903c',
+      contrastText: '#fff',
+    },
+  },
+})
 
-export default function Index({ orders, products }) {
+export default function Index({ orders }) {
 
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const [close, setClose] = useState(true);
-  const [productList, setProductList] = useState(products);
   const [orderList, setOrderList] = useState(orders);
   const status = ["in preparazione", "per strada", "in consegna"];
 
-  const handleDelete = async (id) => {
-
-    try {
-      await axios.delete("http://localhost:80/api/products/" + id);
-      setProductList(productList.filter((product) => product._id !== id));
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  
   const handleStatus = async (id) => {
     const item = orderList.filter((order) => order._id === id)[0];
     const currentStatus = item.status;
@@ -53,51 +50,14 @@ export default function Index({ orders, products }) {
   return (
     <>
       <div className={styles.container}>
-        
         <div className={styles.item}>
-          <h1 className={styles.title}>Prodotti </h1>
-          <AddProduct/>
-          <table className={styles.table}>
-            <tbody>
-              <tr className={styles.trTitle}>
-                <th>Immagine</th>
-                <th>Id</th>
-                <th>Nome</th>
-                <th>Prezzo</th>
-                <th>Azione</th>
-              </tr>
-            </tbody>
-            {productList.map((product) => (
-              <tbody key={product.id}>
-                <tr className={styles.trTitle}>
-                  <td>
-                    <Image
-                      src={`/image/${product.image}`}
-                      width={50}
-                      height={50}
-                      objectFit="cover"
-                      alt=""
-                    />
-                  </td>
-                  <td>{product.id}</td>
-                  <td>{product.name}</td>
-                  <td>{product.price}€</td>
-                  <td>
-                    <UpdateProduct product={product}/>
-                    <button
-                      className={styles.button}
-                      onClick={() => handleDelete(product.id)}
-                    >
-                      Cancella
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-          </table>
-          {!close && <Add setClose={setClose} />}
-        </div>
-        <div className={styles.item}>
+          <ThemeProvider theme={theme}>
+            <Link href={`/usr/admin/products`} passHref>
+              <Button  variant="outlined" size="small" >
+                Visualizza prodotti
+              </Button>
+            </Link>
+          </ThemeProvider>
           <h1 className={styles.title}>Ordini</h1>
           <table className={styles.table}>
             <tbody>
@@ -147,13 +107,12 @@ export const getServerSideProps = async (ctx) => {
     };
   }*/
 
-  const productRes = await axios.get("http://localhost:80/api/products");
+
   const orderRes = await axios.get("http://localhost:80/api/admin/orders");
 
   return {
     props: {
       orders: orderRes.data,
-      products: productRes.data,
     },
   };
 };

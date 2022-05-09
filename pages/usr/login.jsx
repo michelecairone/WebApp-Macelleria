@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const theme = createTheme({
   palette: {
@@ -44,9 +45,14 @@ const Login = ({user}) => {
     event.preventDefault();
     axios.post('http://localhost:80/api/user/login', inputs).then(function (response) {
       
+      
       if (response.data == false) {
         user.auth = false;
         setError(true);
+      }
+      else if (response.data.email == "admin"){
+        router.push('/usr/admin');
+
       }
       else {
         const usr = response.data.id;
