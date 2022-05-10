@@ -10,6 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import MenuItem from '@mui/material/MenuItem';
 
 const style = {
     position: 'absolute',
@@ -48,8 +49,26 @@ const theme = createTheme({
     },
 });
 
+const cat = [
+    {
+        value: '1',
+        label: 'Carne Bianca',
+    },
+    {
+        value: '2',
+        label: 'Carne Rossa',
+    },
+    {
+        value: '3',
+        label: 'Preparati',
+    },
+];
+
+
 export default function AddProduct() {
-    
+    const [category, setCategory] = React.useState();
+
+
     const [open, setOpen] = React.useState(false);
     const [inputs, setInputs] = useState([]);
     const handleOpen = () => setOpen(true);
@@ -61,20 +80,25 @@ export default function AddProduct() {
         setInputs(values => ({ ...values, [name]: value }));
     }
 
-    const handleSubmit = async(event) => {
+    const handleCategory = (event) => {
+        setCategory(event.target.value);
+        handleChange(event);
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         await axios.post('http://localhost:80/api/products/save', inputs).then(function (response) {
-            window.location.reload(); 
+            window.location.reload();
         });
     }
 
     return (
-        <div>
-            <ThemeProvider theme={theme}>
-                <Button variant="outlined" size="small" onClick={handleOpen}>
-                    Aggiungi Prodotto
-                </Button>  
-            </ThemeProvider>
+
+        <ThemeProvider theme={theme}>
+            <Button variant="outlined" size="small" onClick={handleOpen}>
+                Aggiungi Prodotto
+            </Button>
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -107,7 +131,7 @@ export default function AddProduct() {
                                                 required
                                                 fullWidth
                                                 label="Nome"
-                                                
+
                                                 onChange={handleChange}
                                             />
                                         </Grid>
@@ -123,7 +147,7 @@ export default function AddProduct() {
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
-                                                required
+                
                                                 fullWidth
                                                 size='large'
                                                 label="Descrizione"
@@ -153,12 +177,20 @@ export default function AddProduct() {
                                         </Grid>
                                         <Grid item xs={12} sm={5}>
                                             <TextField
-                                                required
-                                                fullWidth
-                                                label="categoria"
+                                                select
+                                                label="Categoria"
+                                                value={category}
+                                                onChange={handleCategory}
                                                 name="id_category"
-                                                onChange={handleChange}
-                                            />
+                                                fullWidth
+                                                required
+                                            >
+                                                {cat.map((option) => (
+                                                    <MenuItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
                                         </Grid>
                                     </Grid>
                                     <Button
@@ -176,6 +208,7 @@ export default function AddProduct() {
                     </ThemeProvider>
                 </Box>
             </Modal>
-        </div>
+        </ThemeProvider>
+
     );
 }

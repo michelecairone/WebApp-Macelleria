@@ -11,6 +11,7 @@ import * as React from 'react';
 import { useState } from "react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styles from "../styles/Admin.module.css";
+import MenuItem from '@mui/material/MenuItem';
 
 const theme = createTheme({
     palette: {
@@ -37,24 +38,53 @@ const style = {
     p: 2,
 };
 
+const cat = [
+    {
+        value: '1',
+        label: 'Carne Bianca',
+    },
+    {
+        value: '2',
+        label: 'Carne Rossa',
+    },
+    {
+        value: '3',
+        label: 'Preparati',
+    },
+];
 
 export default function UpdateProduct({ product }) {
 
+    const [category, setCategory] = React.useState(product.id_category);
+
     const [open, setOpen] = React.useState(false);
-    const [inputs, setInputs] = useState([]);
+    const [inputs, setInputs] = useState({
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        description: product.description,
+        price: product.price,
+        amount: product.amount,
+        id_category: product.id_category,
+    });
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    
+
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }));
     }
 
-    const handleSave = async() => {
+    const handleCategory = (event) => {
+        setCategory(event.target.value);
+        handleChange(event);
+    };
+
+    const handleSave = async () => {
 
         await axios.put(`http://localhost:80/api/product/${product.id}/edit`, inputs).then(function (response) {
-            console.log(response.data); 
+            console.log(response.data);
         });
     }
 
@@ -113,7 +143,7 @@ export default function UpdateProduct({ product }) {
                                         <Grid item xs={12}>
                                             <TextField
                                                 type="text"
-                                                required
+                                            
                                                 fullWidth
                                                 size='large'
                                                 label="Descrizione"
@@ -147,14 +177,19 @@ export default function UpdateProduct({ product }) {
                                         </Grid>
                                         <Grid item xs={12} sm={5}>
                                             <TextField
-                                                type="tel"
-                                                required
-                                                fullWidth
-                                                label="categoria"
+                                                select
+                                                label="Categoria"
+                                                value={category}
+                                                onChange={handleCategory}
                                                 name="id_category"
-                                                defaultValue={`${product.id_category}`}
-                                                onChange={handleChange}
-                                            />
+                                            >
+                                                {cat.map((option) => (
+                                                    <MenuItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
+
                                         </Grid>
                                     </Grid>
                                     <Box
