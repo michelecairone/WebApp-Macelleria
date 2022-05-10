@@ -66,7 +66,7 @@ const cat = [
 
 
 export default function AddProduct() {
-    const [category, setCategory] = React.useState();
+    const [category, setCategory] = React.useState('');
 
 
     const [open, setOpen] = React.useState(false);
@@ -86,9 +86,10 @@ export default function AddProduct() {
     };
 
     const handleSubmit = async (event) => {
+       
         event.preventDefault();
         await axios.post('http://localhost:80/api/products/save', inputs).then(function (response) {
-            window.location.reload();
+            //window.location.reload();
         });
     }
 
