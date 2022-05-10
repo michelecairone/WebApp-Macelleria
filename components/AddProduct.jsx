@@ -89,7 +89,7 @@ export default function AddProduct() {
        
         event.preventDefault();
         await axios.post('http://localhost:80/api/products/save', inputs).then(function (response) {
-            //window.location.reload();
+            window.location.reload();
         });
     }
 
