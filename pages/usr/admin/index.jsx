@@ -53,7 +53,7 @@ export default function Index({ orders }) {
         <div className={styles.item}>
           <ThemeProvider theme={theme}>
             <Link href={`/usr/admin/products`} passHref>
-              <Button  variant="outlined" size="small" >
+              <Button variant="outlined" size="small" >
                 Visualizza prodotti
               </Button>
             </Link>
@@ -73,7 +73,13 @@ export default function Index({ orders }) {
             {orderList.map((order) => (
               <tbody key={order.id_order}>
                 <tr className={styles.trTitle}>
-                  <td>{order.id_order}</td>
+                  <td>
+                    <Link href={`/usr/admin/${order.id_order}?id=${order.id}`} passHref>
+                      <Button variant="outlined" size="small" >
+                        {order.id_order}
+                      </Button>
+                    </Link>
+                  </td>
                   <td>{order.name} {order.surname}</td>
                   <td>{order.total}€</td>
                   <td>

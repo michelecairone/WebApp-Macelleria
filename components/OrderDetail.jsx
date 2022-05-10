@@ -1,51 +1,85 @@
+import axios from "axios";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import { useState } from "react";
-import styles from "../styles/OrderDetail.module.css";
+import CardMedia from '@mui/material/CardMedia';
+import Grid from '@mui/material/Grid';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { styled } from '@mui/material/styles';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Link from "next/link";
 
-const OrderDetail = ({ total, createOrder }) => {
-  const [customer, setCustomer] = useState("");
-  const [address, setAddress] = useState("");
 
-  const handleClick = () => {
-    createOrder({ customer, address, total, method: 0 });
-  };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <h1 className={styles.title}>You will pay $12 after delivery.</h1>
-        <div className={styles.item}>
-          <label className={styles.label}>Name Surname</label>
-          <input
-            placeholder="John Doe"
-            type="text"
-            className={styles.input}
-            onChange={(e) => setCustomer(e.target.value)}
-          />
-        </div>
-        <div className={styles.item}>
-          <label className={styles.label}>Phone Number</label>
-          <input
-            type="text"
-            placeholder="+1 234 567 89"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.item}>
-          <label className={styles.label}>Address</label>
-          <textarea
-            rows={5}
-            placeholder="Elton St. 505 NY"
-            type="text"
-            className={styles.textarea}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
-        <button className={styles.button} onClick={handleClick}>
-          Order
-        </button>
-      </div>
-    </div>
-  );
-};
+export default function Orders({ products }) {
+    
+    return (
+        <Container component="main" maxWidth="xs">
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    marginBottom: 8,
+                }}
+            >
 
-export default OrderDetail;
+                <Card sx={{ minWidth: 700 }}>
+
+                    <CardContent>
+                        <Typography variant="h6" gutterBottom component="div">
+                            #ORDINE: {products[0].id_order}
+                        </Typography>
+                        <Typography variant="h7" component="div">
+                            Data: {products[0].date_ord}
+                        </Typography>
+                        <hr />
+                        {products.map((prod) => (
+                            <Grid
+                                key={prod.id}
+                                container
+                                direction="row"
+                                justifyContent="space-evenly"
+                                alignItems="center"
+                            >
+                                <Grid item>
+                                    <CardMedia
+                                        component="img"
+                                        sx={{ width: 151 }}
+                                        image={`/image/${prod.image}`}
+                                        alt="Live from space album cover"
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="h6" gutterBottom>
+                                        {prod.name}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item>
+                                    <Typography variant="overline" display="block" gutterBottom>
+                                        {prod.amount} Kg
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="overline" display="block" gutterBottom>
+                                        € {prod.total}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        ))}
+
+                    </CardContent>
+                </Card>
+            </Box>
+        </Container>
+    );
+
+}

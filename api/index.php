@@ -83,7 +83,7 @@ switch ($method) {
         if ($path[2] === 'admin') {
 
             if ($path[3] === 'orders') {
-                $sql = 'SELECT id_order, name, surname, state, date_ord, total
+                $sql = 'SELECT id_order, c.id, name, surname, state, date_ord, total
                       FROM clients c, orders o, make m
                       WHERE m.id_order = o.id
                       AND m.id_client = c.id';
