@@ -159,13 +159,12 @@ switch ($method) {
                 }
             }
             if ($path[3] === 'save') {
-                $sql = "INSERT INTO products(id, name, price, amount, description, image, id_category)
-              VALUES(null, :name, :price, :amount, :description, :image, :id_category)";
+                $sql = "INSERT INTO products(id, name, price, description, image, id_category)
+              VALUES(null, :name, :price, :description, :image, :id_category)";
                 $stmt = $conn->prepare($sql);
 
                 $stmt->bindParam(':name', $user->name);
                 $stmt->bindParam(':price', $user->price);
-                $stmt->bindParam(':amount', $user->amount);
                 $stmt->bindParam(':description', $user->description);
                 $stmt->bindParam(':image', $user->image);
                 $stmt->bindParam(':id_category', $user->id_category);
@@ -179,7 +178,7 @@ switch ($method) {
             }
             if ($path[3] === 'filter') {
 
-                $sql = "SELECT p.id, p.name, p.price, p.amount, p.description, p.image FROM products p, category c
+                $sql = "SELECT p.id, p.name, p.price, p.description, p.image FROM products p, category c
                     WHERE p.id_category = c.id";
                 $var = 0;
 
@@ -282,13 +281,12 @@ switch ($method) {
 
             if (isset($path[3]) && is_numeric($path[3]) && isset($path[4]) && ($path[4] === 'edit')) {
                 $sql = "UPDATE products
-                        SET name= :name, price = :price, amount = :amount, description= :description, image =:image, id_category =:id_category WHERE products.id = :id";
+                        SET name= :name, price = :price, description= :description, image =:image, id_category =:id_category WHERE products.id = :id";
                 $stmt = $conn->prepare($sql);
 
                 $stmt->bindParam(':id', $path[3]);
                 $stmt->bindParam(':name', $user->name);
                 $stmt->bindParam(':price', $user->price);
-                $stmt->bindParam(':amount', $user->amount);
                 $stmt->bindParam(':description', $user->description);
                 $stmt->bindParam(':image', $user->image);
                 $stmt->bindParam(':id_category', $user->id_category);
