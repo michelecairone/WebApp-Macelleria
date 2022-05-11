@@ -14,72 +14,169 @@ import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Link from "next/link";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#b7903c',
+            contrastText: '#fff'
+        },
+    },
+});
+
+const stato = [
+    {
+        value: '1',
+        label: 'in preparazione',
+    },
+    {
+        value: '2',
+        label: 'in consegna',
+    },
+    {
+        value: '3',
+        label: 'consegnato',
+    },
+];
 
 
 
 export default function Orders({ products }) {
-    
+    const [state, setState] = useState(1);
+
+
+    const handleState = (event) => {
+        setState(event.target.value);
+
+    };
+
+    function updateState(){
+        /*axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state).then(function (response) {
+            console.log(response.data);
+            
+        });*/
+    }
+
     return (
-        <Container component="main" maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    marginBottom: 8,
-                }}
-            >
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginBottom: 8,
+                    }}
+                >
 
-                <Card sx={{ minWidth: 700 }}>
+                    <Card sx={{ minWidth: 700 }}>
 
-                    <CardContent>
-                        <Typography variant="h6" gutterBottom component="div">
-                            #ORDINE: {products[0].id_order}
-                        </Typography>
-                        <Typography variant="h7" component="div">
-                            Data: {products[0].date_ord}
-                        </Typography>
-                        <hr />
-                        {products.map((prod) => (
+                        <CardContent>
                             <Grid
-                                key={prod.id}
                                 container
                                 direction="row"
-                                justifyContent="space-evenly"
-                                alignItems="center"
-                            >
+                                justifyContent="space-between">
                                 <Grid item>
-                                    <CardMedia
-                                        component="img"
-                                        sx={{ width: 151 }}
-                                        image={`/image/${prod.image}`}
-                                        alt="Live from space album cover"
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="h6" gutterBottom>
-                                        {prod.name}
+                                    <Typography variant="h6" gutterBottom component="div">
+                                        #ORDINE: {products[0].id_order}
                                     </Typography>
+                                    <Typography variant="h7" component="div">
+                                        Data: {products[0].date_ord}
+                                    </Typography>
+                                    {(products[0].name_client) ?
+                                        <>
+                                            <Typography variant="h7" component="div">
+                                                Stato attuale: {products[0].state}
+                                            </Typography>
+                                            <TextField
+                                                select
+                                                label="Modifica stato"
+                                                value={state}
+                                                onChange={handleState}
+                                                name="order_state"
+                                                sx={{ marginTop: 2 }}
+                                                size='small'
+                                                fullWidth
+                                            >
+                                                {stato.map((option) => (
+                                                    <MenuItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
+                                            <Button onClick={updateState}>Conferma stato</Button>
+                                        </>
+                                        :
+
+                                        <Typography variant="h7" component="div">
+                                            Stato: {products[0].state}
+                                        </Typography>
+                                    }
+
+
                                 </Grid>
 
                                 <Grid item>
-                                    <Typography variant="overline" display="block" gutterBottom>
-                                        {prod.amount} Kg
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="overline" display="block" gutterBottom>
-                                        € {prod.total}
-                                    </Typography>
+                                    {(products[0].name_client) ? <>
+                                        <Typography variant="h7" gutterBottom component="div">
+                                            {products[0].name_client} {products[0].surname}
+                                        </Typography>
+                                        <Typography variant="h7" component="div">
+                                            {products[0].address}, {products[0].city}
+                                        </Typography>
+                                        <Typography variant="h7" component="div">
+                                            Tel. {products[0].telephone}
+                                        </Typography></> :
+                                        <></>
+                                    }
                                 </Grid>
                             </Grid>
-                        ))}
+                            <hr />
+                            {products.map((prod) => (
+                                <Grid
+                                    key={prod.id}
+                                    container
+                                    direction="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    <Grid item sx={{ width: 152 }}>
+                                        <CardMedia
+                                            component="img"
+                                            sx={{ width: 151 }}
+                                            image={`/image/${prod.image}`}
+                                            alt="Live from space album cover"
+                                        />
+                                    </Grid>
+                                    <Grid item sx={{ width: 300 }}>
+                                        <Typography variant="h6" gutterBottom>
+                                            {prod.name}
+                                        </Typography>
+                                    </Grid>
 
-                    </CardContent>
-                </Card>
-            </Box>
-        </Container>
+                                    <Grid item sx={{ width: 124 }}>
+                                        <Typography variant="overline" display="block" gutterBottom>
+                                            {prod.amount} Kg
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="overline" display="block" gutterBottom>
+                                            € {prod.total}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            ))}
+
+                        </CardContent>
+                    </Card>
+                </Box>
+            </Container>
+        </ThemeProvider>
     );
 
 }

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 export default function orderDetail({ id, products}) {
     
-    console.log(id);
+    console.log(products);
 
     return (
         <>
@@ -14,9 +14,9 @@ export default function orderDetail({ id, products}) {
 
 }
 
-export const getServerSideProps = async ({ id, params }) => {
+export const getServerSideProps = async ({ params }) => {
    
-    const res = await axios.get(`http://localhost:80/api/user/5/orders/${params.orderDetail}`);
+    const res = await axios.get(`http://localhost:80/api/admin/orders/${params.orderDetail}`);
 
     return {
         props: {

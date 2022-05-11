@@ -54,8 +54,8 @@ switch ($method) {
             if (isset($path[3]) && is_numeric($path[3])) {
                 if (isset($path[4]) && ($path[4] === 'orders')) {
                     if (isset($path[5]) && is_numeric($path[5])) {
-                        $sql = "SELECT s.id_order, m.date_ord, p.id, p.name, p.image, s.amount, s.total FROM products p, shopping_cart s, make m
-                        WHERE p.id = s.id_product AND s.id_order = :id AND m.id_order = s.id_order";
+                        $sql = "SELECT s.id_order, m.date_ord, p.id, p.name, p.image, s.amount, s.total, o.state FROM products p, shopping_cart s, make m, orders o
+                        WHERE p.id = s.id_product AND s.id_order = :id AND m.id_order = s.id_order AND o.id = m.id_order";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':id', $path[5]);
                         $stmt->execute();
@@ -82,14 +82,32 @@ switch ($method) {
         }
         if ($path[2] === 'admin') {
 
+
+
             if ($path[3] === 'orders') {
-                $sql = 'SELECT id_order, c.id, name, surname, state, date_ord, total
+                if (isset($path[4]) && is_numeric($path[4])) {
+                    $sql = "SELECT c.id as 'id_client', c.name as 'name_client', c.surname, c.address, c.city, c.telephone, s.id_order, state, date_ord, p.id, p.name, p.image, s.amount, s.total
+                    FROM clients c, orders o, make m, products p, shopping_cart s
+                    WHERE m.id_order = o.id
+                    AND m.id_client = c.id
+                    AND p.id = s.id_product
+                    AND s.id_order = :id AND m.id_order = s.id_order";
+
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':id', $path[4]);
+                    $stmt->execute();
+                    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                } else {
+
+
+                    $sql = 'SELECT id_order, c.id, name, surname, state, date_ord, total
                       FROM clients c, orders o, make m
                       WHERE m.id_order = o.id
                       AND m.id_client = c.id';
-                $stmt = $conn->prepare($sql);
-                $stmt->execute();
-                $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
             } else {
                 echo json_encode("errore utente non trovato");
             }
@@ -300,6 +318,34 @@ switch ($method) {
                 echo json_encode($response);
             }
         }
+
+        /*if ($path[2] === 'order_state') {
+
+            if (isset($path[3]) && is_numeric($path[3]) ) {
+                $sql = "UPDATE orders
+                        SET state= :state WHERE orders.id = :id";
+                $stmt = $conn->prepare($sql);
+
+                $stmt->bindParam(':id', $path[3]);
+                
+                if ($path[3] === 1){
+                    $stmt->bindValue(':state', "in preparazione", PDO::PARAM_STR);
+                }
+                else if ($path[3] === 2){
+                    $stmt->bindValue(':state', "in consegna", PDO::PARAM_STR);
+                } else if ($path[3] === 3){
+                    $stmt->bindValue(':state', "consegnato", PDO::PARAM_STR);
+                } 
+
+
+                if ($stmt->execute()) {
+                    $response = ['status' => 1, 'message' => 'Record updated successfully.'];
+                } else {
+                    $response = ['status' => 0, 'message' => 'Failed to update record.'];
+                }
+                echo json_encode($response);
+            }
+        }*/
 
         break;
 
