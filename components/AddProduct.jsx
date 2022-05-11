@@ -168,16 +168,6 @@ export default function AddProduct() {
                                         </Grid>
                                         <Grid item xs={12} sm={5}>
                                             <TextField
-                                                required
-                                                fullWidth
-                                                label="Quantità"
-                                                name="amount"
-                                                type="tel"
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={5}>
-                                            <TextField
                                                 select
                                                 label="Categoria"
                                                 value={category}

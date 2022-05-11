@@ -64,7 +64,6 @@ export default function UpdateProduct({ product }) {
         image: product.image,
         description: product.description,
         price: product.price,
-        amount: product.amount,
         id_category: product.id_category,
     });
     const handleOpen = () => setOpen(true);
@@ -161,17 +160,6 @@ export default function UpdateProduct({ product }) {
                                                 label="Prezzo al Kg"
                                                 name="price"
                                                 defaultValue={`${product.price}`}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={5}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                label="Quantità"
-                                                name="amount"
-                                                defaultValue={`${product.amount}`}
-                                                type="tel"
                                                 onChange={handleChange}
                                             />
                                         </Grid>
