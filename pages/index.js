@@ -2,7 +2,6 @@ import axios from "axios";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import Add from "../components/Add";
-import AddButton from "../components/AddButton";
 import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
