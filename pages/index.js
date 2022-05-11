@@ -2,10 +2,7 @@ import axios from "axios";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import Add from "../components/Add";
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
