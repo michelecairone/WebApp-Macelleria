@@ -45,7 +45,7 @@ const stato = [
 
 
 export default function Orders({ products }) {
-    const [state, setState] = useState(1);
+    const [state, setState] = useState('');
 
 
     const handleState = (event) => {
@@ -53,11 +53,12 @@ export default function Orders({ products }) {
 
     };
 
-    function updateState(){
-        /*axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state).then(function (response) {
+    function updateState() {
+        console.log(state);
+        axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state).then(function (response) {
             console.log(response.data);
-            
-        });*/
+
+        });
     }
 
     return (
@@ -108,7 +109,13 @@ export default function Orders({ products }) {
                                                     </MenuItem>
                                                 ))}
                                             </TextField>
-                                            <Button onClick={updateState}>Conferma stato</Button>
+                                            {(state === '') ?
+                                                <Button disabled>Conferma stato</Button>
+
+                                                :
+                                                <Button onClick={updateState}>Conferma stato</Button>
+                                            }
+
                                         </>
                                         :
 

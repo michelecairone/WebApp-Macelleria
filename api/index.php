@@ -319,7 +319,7 @@ switch ($method) {
             }
         }
 
-        /*if ($path[2] === 'order_state') {
+        if ($path[2] === 'order_state') {
 
             if (isset($path[3]) && is_numeric($path[3]) ) {
                 $sql = "UPDATE orders
@@ -328,24 +328,24 @@ switch ($method) {
 
                 $stmt->bindParam(':id', $path[3]);
                 
-                if ($path[3] === 1){
+                if ($user === 1){
                     $stmt->bindValue(':state', "in preparazione", PDO::PARAM_STR);
                 }
-                else if ($path[3] === 2){
+                else if ($user === 2){
                     $stmt->bindValue(':state', "in consegna", PDO::PARAM_STR);
-                } else if ($path[3] === 3){
+                } else if ($user === 3){
                     $stmt->bindValue(':state', "consegnato", PDO::PARAM_STR);
                 } 
 
 
                 if ($stmt->execute()) {
-                    $response = ['status' => 1, 'message' => 'Record updated successfully.'];
+                    $response = ['status' => 1, 'message' => 'State updated successfully.'];
                 } else {
-                    $response = ['status' => 0, 'message' => 'Failed to update record.'];
+                    $response = ['status' => 0, 'message' => 'Failed to update state.'];
                 }
                 echo json_encode($response);
             }
-        }*/
+        }
 
         break;
 
