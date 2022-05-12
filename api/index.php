@@ -103,7 +103,8 @@ switch ($method) {
                     $sql = 'SELECT id_order, c.id, name, surname, state, date_ord, total
                       FROM clients c, orders o, make m
                       WHERE m.id_order = o.id
-                      AND m.id_client = c.id';
+                      AND m.id_client = c.id
+                      ORDER BY date_ord DESC';
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -148,7 +149,7 @@ switch ($method) {
                 $conn3 = $objDb3->connect();
                 $sql3 = "INSERT INTO orders(id, state, total)
               VALUES(:id_order, :state, :total)";
-                $pp = "da settare";
+                $pp = "attesa di conferma";
                 $stmt3 = $conn3->prepare($sql3);
                 $stmt3->bindParam(':id_order', $id_order["id_order"]);
                 $stmt3->bindParam(':state', $pp);
