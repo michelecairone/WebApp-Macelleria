@@ -6,8 +6,20 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    PayPalScriptProvider,
+    PayPalButtons,
+    usePayPalScriptReducer,
+} from "@paypal/react-paypal-js";
 
 export default function LogMenu({ user, cart }) {
+
+    const [open, setOpen] = useState(false);
+    const [cash, setCash] = useState(false);
+
+    const amount = cart.total;
+    const currency = "EUR";
 
     const [logged, setLogged] = useState(null);
 
@@ -35,7 +47,7 @@ export default function LogMenu({ user, cart }) {
         };
     }
    
-    async function verifyUser() {
+    const verifyUser = async () => {
         let id_user = (parseInt(user.usr));
         console.log("prima di id_user");
         console.log(id_user);
@@ -51,8 +63,61 @@ export default function LogMenu({ user, cart }) {
 
     }
 
+    // Custom component to wrap the PayPalButtons and handle currency changes
+    const ButtonWrapper = ({ currency, showSpinner }) => {
+        // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
+        // This is the main reason to wrap the PayPalButtons in a new component
+        const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
+
+        useEffect(() => {
+            dispatch({
+                type: "resetOptions",
+                value: {
+                    ...options,
+                    currency: currency,
+                },
+            });
+        }, [currency, showSpinner]);
+
+        return (
+            <>
+                {showSpinner && isPending && <div className="spinner" />}
+                <PayPalButtons
+                    style={style}
+                    disabled={false}
+                    forceReRender={[amount, currency, style]}
+                    fundingSource={undefined}
+                    createOrder={(data, actions) => {
+                        return actions.order
+                            .create({
+                                purchase_units: [
+                                    {
+                                        amount: {
+                                            currency_code: currency,
+                                            value: amount,
+                                        },
+                                    },
+                                ],
+                            })
+                            .then((orderId) => {
+                                // Your code here after create the order
+                                return orderId;
+                            });
+                    }}
+                    onApprove={function (data, actions) {
+                        return actions.order.capture().then(function (details) {
+                            
+                            
+                        });
+                    }}
+                />
+            </>
+        );
+    };
+
     if (logged == null) { 
-        return (<button onClick={() => verifyUser()} className={style.button}>
+        return (
+        <button onClick={() => verifyUser()} className={style.button}>
             CHECKOUT NOW !
         </button>)
 } 
@@ -60,6 +125,17 @@ export default function LogMenu({ user, cart }) {
         return (
             <>
                 <div className={style.right}>
+                    <PayPalScriptProvider
+                        options={{
+                            "client-id":
+                                "ARmEM0i9u-hUpQmPdKneDeQl__0co-SN56SFM4tnIT4SLT4Nt9VApTJoRS-XM-gkBM08e5uFNTkRbhag",
+                            components: "buttons",
+                            currency: "eur",
+                            "disable-funding": "credit,card,p24",
+                        }}
+                    >
+                        <ButtonWrapper currency={currency} showSpinner={false} />
+                    </PayPalScriptProvider>
                     <button className={style.button} onClick={() => createOrder()}> Effettua Ordine </button>
                 </div>
             </>
