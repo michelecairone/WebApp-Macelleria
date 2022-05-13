@@ -49,7 +49,7 @@ const Cart = ({ user }) => {
       });
     }, [currency, showSpinner]);
 
-    
+
     return (
       <>
         {showSpinner && isPending && <div className="spinner" />}
@@ -132,7 +132,7 @@ const Cart = ({ user }) => {
                 </td>
                 <td>
                   <span>
-                    <Button color="error" onClick={() => deleteProduct(product)}> 
+                    <Button color="error" onClick={() => deleteProduct(product)}>
                       <ClearIcon />
                     </Button>
                   </span>
@@ -154,7 +154,9 @@ const Cart = ({ user }) => {
           <div className={styles.totalText}>
             <b className={styles.totalTextTitle}>Totale:</b>{(cart.total).toFixed(2)} €
           </div>
-          <LogMenu user={user} cart={cart} />
+          <div className={styles.totalText}>
+            <LogMenu user={user} cart={cart} />
+          </div>
         </div>
       </div>
       {cash && <OrderDetail total={cart.total} createOrder={createOrder} />}

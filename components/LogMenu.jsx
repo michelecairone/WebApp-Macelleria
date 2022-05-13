@@ -7,22 +7,21 @@ import 'reactjs-popup/dist/index.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import {
     PayPalScriptProvider,
     PayPalButtons,
     usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
+import { reset } from "../redux/cartSlice";
 
 export default function LogMenu({ user, cart }) {
 
-    const [open, setOpen] = useState(false);
-    const [cash, setCash] = useState(false);
-
+    const router = useRouter();
+    const dispatch = useDispatch();
     const amount = cart.total;
     const currency = "EUR";
-
     const [logged, setLogged] = useState(null);
-
     const [inputs, setInputs] = useState({
         
             id_client: parseInt(user.usr),
@@ -33,26 +32,20 @@ export default function LogMenu({ user, cart }) {
     
     const createOrder = async () => {
        
-        /*setInputs(({
-            id_client: parseInt(user.usr),
-            cart_total: cart.total,
-            products: cart.products,
-            
-        }));*/
-
-        const res = await axios.post('http://localhost:80/api/products/order', inputs);{
-            console.log(res.data);
-          
-
-        };
+        try {
+            const res = await axios.post('http://localhost:80/api/products/order', inputs);
+            if (res.status === 200) {
+                dispatch(reset());
+                router.push(`usr/${user.usr}/orders/${res.data.id_order}/?usr=${user.usr}`);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
    
     const verifyUser = async () => {
-        let id_user = (parseInt(user.usr));
-        console.log("prima di id_user");
-        console.log(id_user);
-        console.log("dopo di id_user");
-
+        const id_user = (parseInt(user.usr));
+      
         if (id_user > 0) {
             setLogged(true);
         }
@@ -81,7 +74,7 @@ export default function LogMenu({ user, cart }) {
 
         return (
             <>
-                {showSpinner && isPending && <div className="spinner" />}
+                {(showSpinner && isPending) && <div className="spinner" />}
                 <PayPalButtons
                     style={style}
                     disabled={false}
@@ -101,14 +94,13 @@ export default function LogMenu({ user, cart }) {
                             })
                             .then((orderId) => {
                                 // Your code here after create the order
+
                                 return orderId;
                             });
                     }}
-                    onApprove={function (data, actions) {
-                        return actions.order.capture().then(function (details) {
-                            
-                            
-                        });
+                    onApprove={function () {
+                        createOrder();
+                        
                     }}
                 />
             </>
@@ -118,10 +110,10 @@ export default function LogMenu({ user, cart }) {
     if (logged == null) { 
         return (
         <button onClick={() => verifyUser()} className={style.button}>
-            CHECKOUT NOW !
+                Effettua Ordine!
         </button>)
 } 
-    if (logged) {
+    else if (logged) {
         return (
             <>
                 <div className={style.right}>
@@ -131,12 +123,11 @@ export default function LogMenu({ user, cart }) {
                                 "ARmEM0i9u-hUpQmPdKneDeQl__0co-SN56SFM4tnIT4SLT4Nt9VApTJoRS-XM-gkBM08e5uFNTkRbhag",
                             components: "buttons",
                             currency: "eur",
-                            "disable-funding": "credit,card,p24",
+                            "disable-funding": "credit,card,p24,sofort,mybank",
                         }}
                     >
-                        <ButtonWrapper currency={currency} showSpinner={false} />
+                        <ButtonWrapper currency={currency} showSpinner={false}/>
                     </PayPalScriptProvider>
-                    <button className={style.button} onClick={() => createOrder()}> Effettua Ordine </button>
                 </div>
             </>
         )
