@@ -174,8 +174,9 @@ switch ($method) {
                     $stmt4->bindParam(':total', $total);
 
                     $rst3 = $stmt4->execute();
-                    echo json_encode($rst3);
+                    
                 }
+                echo json_encode($id_order);
             }
             if ($path[3] === 'save') {
                 $sql = "INSERT INTO products(id, name, price, description, image, id_category)
