@@ -42,20 +42,25 @@ export default function LogMenu({ user, cart }) {
             console.log(err);
         }
     }
-   
+
     const verifyUser = async () => {
         const id_user = (parseInt(user.usr));
-      
-        if (id_user > 0) {
-            setLogged(true);
+        try {
+            const res = await axios.get(`http://localhost:80/api/user/${id_user}`);
+            
+            if (res.data.email === undefined) {
+                setLogged(false);
+            }
+            else{
+                setLogged(true);
+            }   
+        } 
+        catch (err) {
+            
+            console.log(err);
         }
-        else {
-            setLogged(false);
-        }
-        console.log("funzione di verifica");
-
     }
-
+   
     // Custom component to wrap the PayPalButtons and handle currency changes
     const ButtonWrapper = ({ currency, showSpinner }) => {
         // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
