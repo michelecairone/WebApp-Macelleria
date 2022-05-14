@@ -28,7 +28,7 @@ export default function Orders({ user, orders }) {
                             <Link href={`/usr/${user.usr}/orders/${ord.id_order}/?usr=${user.usr}`} passHref>
                                 <CardContent>
                                     <Typography variant="h6" gutterBottom component="div">
-                                        #ORDINE: {ord.id_order}
+                                        ORDINE: {ord.id_order}
                                     </Typography>
                                     <Typography variant="h7" component="div">
                                         Data: {ord.date_ord}

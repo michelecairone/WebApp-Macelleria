@@ -67,7 +67,6 @@ export default function Index({ orders }) {
                 <th>Totale</th>
                 <th>Pagamento</th>
                 <th>Stato</th>
-                <th>Azione</th>
               </tr>
             </tbody>
             {orderList.map((order) => (
@@ -86,11 +85,6 @@ export default function Index({ orders }) {
                     {order.date_ord /*order.method === 0 ? <span>cash</span> : <span>paid</span>*/}
                   </td>
                   <td>{order.state}</td>
-                  <td>
-                    <button onClick={() => handleStatus(order._id)}>
-                      Next Stage
-                    </button>
-                  </td>
                 </tr>
               </tbody>
             ))}

@@ -105,6 +105,45 @@ const Navbar = ({ user }) => {
         );
     }
 
+    function Admin() {
+        return (
+            <>
+                <Link href={`/usr/${user.usr}?usr=${user.usr}`} passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Profilo</Typography>
+                    </MenuItem>
+                </Link>
+                <Link href={`/usr/admin/?usr=${user.usr}`} passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Ordini</Typography>
+                    </MenuItem>
+                </Link>
+                <Link href={`/usr/admin/products?usr=${user.usr}`} passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Prodotti</Typography>
+                    </MenuItem>
+                </Link>
+                <Link href="/usr/login" passHref>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">Esci</Typography>
+                    </MenuItem>
+                </Link>
+            </>
+        );
+    }
+
+    function tab(){
+        if (parseInt(user.usr) === 5){
+            return <Admin />
+        } 
+        else if (Number.isInteger(parseInt(user.usr))) {
+            return <Autenticato />
+        } 
+        else {
+            return <NonAutenticato />
+        }
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -222,7 +261,7 @@ const Navbar = ({ user }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {Number.isInteger(parseInt(user.usr)) ? <Autenticato /> : <NonAutenticato />}
+                                {tab()}
 
                             </Menu>
                             <Link href={`/cart?usr=${user.usr}`} passHref>

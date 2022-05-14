@@ -82,8 +82,6 @@ switch ($method) {
         }
         if ($path[2] === 'admin') {
 
-
-
             if ($path[3] === 'orders') {
                 if (isset($path[4]) && is_numeric($path[4])) {
                     $sql = "SELECT c.id as 'id_client', c.name as 'name_client', c.surname, c.address, c.city, c.telephone, s.id_order, state, date_ord, p.id, p.name, p.image, s.amount, s.total
@@ -130,7 +128,7 @@ switch ($method) {
                 $stmt = $conn->prepare($sql);
 
                 $id_client = $user->id_client;
-                $data = date("Y-m-d h:i:s");
+                $data = date("Y-m-d H:i:s");
 
                 $stmt->bindParam(':id_client', $id_client);
                 $stmt->bindParam(':date_ord', $data);
@@ -174,7 +172,7 @@ switch ($method) {
                     $stmt4->bindParam(':total', $total);
 
                     $rst3 = $stmt4->execute();
-                    
+
                 }
                 echo json_encode($id_order);
             }
@@ -277,7 +275,7 @@ switch ($method) {
         if ($path[2] === 'user') {
             if (isset($path[3]) && is_numeric($path[3]) && isset($path[4]) && ($path[4] === 'edit')) {
                 $sql = "UPDATE clients
-                        SET name= :name, surname = :surname, address = :address, city= :city, email =:email, telephone =:telephone WHERE clients.id = :id";
+                        SET name= :name, surname = :surname, address = :address, city= :city, email =:email, password= :password, telephone =:telephone WHERE clients.id = :id";
                 $stmt = $conn->prepare($sql);
 
                 $stmt->bindParam(':id', $user->id);
@@ -286,6 +284,7 @@ switch ($method) {
                 $stmt->bindParam(':address', $user->address);
                 $stmt->bindParam(':city', $user->city);
                 $stmt->bindParam(':email', $user->email);
+                $stmt->bindParam(':password', $user->password);
                 $stmt->bindParam(':telephone', $user->telephone);
 
 
@@ -329,7 +328,7 @@ switch ($method) {
                 $stmt = $conn->prepare($sql);
 
                 $stmt->bindParam(':id', $path[3]);
-                
+
                 if ($user === 1){
                     $stmt->bindValue(':state', "in preparazione", PDO::PARAM_STR);
                 }
@@ -337,7 +336,7 @@ switch ($method) {
                     $stmt->bindValue(':state', "in consegna", PDO::PARAM_STR);
                 } else if ($user === 3){
                     $stmt->bindValue(':state', "consegnato", PDO::PARAM_STR);
-                } 
+                }
 
 
                 if ($stmt->execute()) {

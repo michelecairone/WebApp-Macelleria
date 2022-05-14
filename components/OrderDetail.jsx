@@ -44,18 +44,17 @@ const stato = [
 
 
 
-export default function Orders({ products }) {
+export default function OrderDetail({ products }) {
     const [state, setState] = useState('');
-
 
     const handleState = (event) => {
         setState(event.target.value);
 
     };
 
-    function updateState() {
+    const updateState = async () => {
         console.log(state);
-        axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state).then(function (response) {
+        await axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state).then(function (response) {
             console.log(response.data);
 
         });
@@ -83,7 +82,7 @@ export default function Orders({ products }) {
                                 justifyContent="space-between">
                                 <Grid item>
                                     <Typography variant="h6" gutterBottom component="div">
-                                        #ORDINE: {products[0].id_order}
+                                        ORDINE: {products[0].id_order}
                                     </Typography>
                                     <Typography variant="h7" component="div">
                                         Data: {products[0].date_ord}

@@ -53,6 +53,7 @@ export default function ProfileDetail({ user, profile }) {
         city: profile.city,
         telephone: profile.telephone,
         email: profile.email,
+        password: profile.password,
     });
 
 
@@ -145,6 +146,18 @@ export default function ProfileDetail({ user, profile }) {
                                     label="Email"
                                     fullWidth
                                     defaultValue={`${profile.email}`}
+                                    InputProps={{
+                                        readOnly: read,
+                                    }}
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="password"
+                                    label="Password"
+                                    fullWidth
+                                    defaultValue={`${profile.password}`}
                                     InputProps={{
                                         readOnly: read,
                                     }}

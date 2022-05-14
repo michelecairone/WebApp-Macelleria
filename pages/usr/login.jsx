@@ -34,6 +34,7 @@ const Login = ({user}) => {
   const router = useRouter();
   const [error, setError] = useState(false);
   const [inputs, setInputs] = useState([]);
+  const [usrDetail, setUsrDetail] = useState([]);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -44,18 +45,22 @@ const Login = ({user}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.post('http://localhost:80/api/user/login', inputs).then(function (response) {
+      console.log(response.data);
+      const usr = response.data.id;
       
       
       if (response.data == false) {
         user.auth = false;
         setError(true);
       }
-      else if (response.data.email == "admin"){
-        router.push('/usr/admin');
-
+      else if (response.data.admin == true){
+        router.push({
+          pathname: '/usr/admin',
+          query: { usr },
+        })
+    
       }
       else {
-        const usr = response.data.id;
         router.push({
           pathname: '/',
           query: {usr},
