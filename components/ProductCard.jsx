@@ -8,7 +8,7 @@ const ProductCard = ({ product, user }) => {
 
   return (
     <div className={styles.container} >
-      <Link href={`/product/${product.id}/?user=${user.usr}` } passHref>
+      <Link href={`/product/${product.id}/}` } passHref>
         <div>
       
           <Image src={ `/image/${product.image}` } alt="" width="500" height="500" />

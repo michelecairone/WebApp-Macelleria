@@ -15,20 +15,26 @@ import {
 } from "@paypal/react-paypal-js";
 import { reset } from "../redux/cartSlice";
 
-export default function LogMenu({ user, cart }) {
+export default function LogMenu({cart}) {
+
+    const { isFetching, error } = useSelector((state) => state.user);
 
     const router = useRouter();
     const dispatch = useDispatch();
     const amount = cart.total;
     const currency = "EUR";
+    const user = useSelector((state) => state.user);
     const [logged, setLogged] = useState(null);
+    const user_id = useState(user.currentUser.id);
     const [inputs, setInputs] = useState({
         
-            id_client: parseInt(user.usr),
+        id_client: parseInt(user_id),
             cart_total: cart.total,
             products: cart.products,
     });
+    
 
+    
     
     const createOrder = async () => {
        
@@ -36,7 +42,7 @@ export default function LogMenu({ user, cart }) {
             const res = await axios.post('http://localhost:80/api/products/order', inputs);
             if (res.status === 200) {
                 dispatch(reset());
-                router.push(`usr/${user.usr}/orders/${res.data.id_order}/?usr=${user.usr}`);
+                router.push(`usr/${user_id}/orders/${res.data.id_order}/`);
             }
         } catch (err) {
             console.log(err);
@@ -44,9 +50,9 @@ export default function LogMenu({ user, cart }) {
     }
 
     const verifyUser = async () => {
-        const id_user = (parseInt(user.usr));
+        
         try {
-            const res = await axios.get(`http://localhost:80/api/user/${id_user}`);
+            const res = await axios.get(`http://localhost:80/api/user/${user_id}`);
             
             if (res.data.email === undefined) {
                 setLogged(false);
@@ -112,13 +118,13 @@ export default function LogMenu({ user, cart }) {
         );
     };
 
-    if (logged == null) { 
+    if (!isFetching) { 
         return (
         <button onClick={() => verifyUser()} className={style.button}>
                 Effettua Ordine!
         </button>)
 } 
-    else if (logged) {
+    else if (isFetching) {
         return (
             <>
                 <div className={style.right}>

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import styles from "../styles/Navbar.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -20,6 +21,8 @@ import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { reset } from "../redux/userRedux";
+
 
 const theme = createTheme({
     palette: {
@@ -40,13 +43,22 @@ const pages = { Home: '/', Prodotti: '/#prodotti', Contatti: '/#contatti' };
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
+
+    const dispatch = useDispatch();
+
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
 
     const quantity = useSelector((state) => state.cart.quantity);
-
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    
+    const user = useSelector((state) => state.user);
+    
+  
+    const quit = (event) => {
+        dispatch(reset());
+        handleCloseUserMenu(event);
+    };
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -65,18 +77,18 @@ const Navbar = ({ user }) => {
     function Autenticato() {
         return (
             <>
-                <Link href={`/usr/${user.usr}?usr=${user.usr}`} passHref>
+                <Link href={`/usr/${user.currentUser.id}`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Profilo</Typography>
                     </MenuItem>
                 </Link>
-                <Link href={`/usr/${user.usr}/orders?usr=${user.usr}`} passHref>
+                <Link href={`/usr/${user.currentUser.id}/orders`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Ordini</Typography>
                     </MenuItem>
                 </Link>
                 <Link href="/usr/login" passHref>
-                    <MenuItem onClick={handleCloseUserMenu}>
+                    <MenuItem onClick={quit}>
                         <Typography textAlign="center">Esci</Typography>
                     </MenuItem>
                 </Link>
@@ -88,14 +100,14 @@ const Navbar = ({ user }) => {
         return (
             <>
                 <Link href="/usr/login" passHref>
-                    <MenuItem onClick={handleCloseUserMenu}>
+                    <MenuItem onClick={quit}>
 
                         <Typography textAlign="center">Accedi</Typography>
 
                     </MenuItem>
                 </Link>
                 <Link href="/usr/register" passHref>
-                    <MenuItem onClick={handleCloseUserMenu}>
+                    <MenuItem onClick={quit}>
 
                         <Typography textAlign="center">Registrati</Typography>
 
@@ -108,35 +120,37 @@ const Navbar = ({ user }) => {
     function Admin() {
         return (
             <>
-                <Link href={`/usr/${user.usr}?usr=${user.usr}`} passHref>
+                <Link href={`/usr/${user.currentUser.id}?`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Profilo</Typography>
                     </MenuItem>
                 </Link>
-                <Link href={`/usr/admin/?usr=${user.usr}`} passHref>
+                <Link href={`/usr/admin/`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Ordini</Typography>
                     </MenuItem>
                 </Link>
-                <Link href={`/usr/admin/products?usr=${user.usr}`} passHref>
+                <Link href={`/usr/admin/products`} passHref>
                     <MenuItem onClick={handleCloseUserMenu}>
                         <Typography textAlign="center">Prodotti</Typography>
                     </MenuItem>
                 </Link>
                 <Link href="/usr/login" passHref>
-                    <MenuItem onClick={handleCloseUserMenu}>
+                    <MenuItem onClick={quit}>
                         <Typography textAlign="center">Esci</Typography>
                     </MenuItem>
                 </Link>
             </>
         );
+
     }
 
     function tab(){
-        if (parseInt(user.usr) === 5){
+
+        if (user.currentUser !== null && user.currentUser.admin === 1){
             return <Admin />
         } 
-        else if (Number.isInteger(parseInt(user.usr))) {
+        else if (user.currentUser !== null) {
             return <Autenticato />
         } 
         else {
@@ -156,7 +170,7 @@ const Navbar = ({ user }) => {
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         >
-                            <Link href={`/?usr=${user.usr}`} passHref>
+                            <Link href={`/`} passHref>
                                 <a>
                                 <Image src="/image/logo.png" alt="" width="100px" height="100px" />
                                 </a>
@@ -192,7 +206,7 @@ const Navbar = ({ user }) => {
                                     display: { xs: 'block', md: 'none' },
                                 }}
                             >
-                                <Link href={`/?usr=${user.usr}`} passHref>
+                                <Link href={`/`} passHref>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Home</Typography>
                                     </MenuItem>
@@ -215,14 +229,14 @@ const Navbar = ({ user }) => {
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                         >
-                            <Link href={`/?usr=${user.usr}`} passHref>
+                            <Link href={`/`} passHref>
                                 <a>
                                 <Image src="/image/logo.png" alt="" width="100px" height="100px" />
                                 </a>
                             </Link>
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            <Link href={`/?usr=${user.usr}`} passHref>
+                            <Link href={`/`} passHref>
                                 <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Home
                                 </Button>
@@ -240,7 +254,7 @@ const Navbar = ({ user }) => {
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title={Number.isInteger(parseInt(user.usr)) ? "Profilo" : "Accedi"}>
+                            <Tooltip title={user.isFetching ? "Profilo" : "Accedi"}>
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <AccountCircleIcon color='secondary' fontSize="large" />
                                 </IconButton>
@@ -264,7 +278,7 @@ const Navbar = ({ user }) => {
                                 {tab()}
 
                             </Menu>
-                            <Link href={`/cart?usr=${user.usr}`} passHref>
+                            <Link href={`/cart`} passHref>
                                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                                     <Badge badgeContent={quantity} color="error">
                                         <ShoppingCartIcon />
