@@ -5,11 +5,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
+export default function index({ orders }) {
 
-
-export default function Orders({ user, orders }) {
-
+    const user = useSelector((state) => state.user);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -25,7 +25,7 @@ export default function Orders({ user, orders }) {
                 {orders.map((ord) => (
                     <Box sx={{ marginBottom: 2 }}>
                         <Card key={ord.id_order} sx={{ minWidth: 700 }}>
-                            <Link href={`/usr/${user.usr}/orders/${ord.id_order}/?usr=${user.usr}`} passHref>
+                            <Link href={`/usr/${user.currentUser.id}/orders/${ord.id_order}/`} passHref>
                                 <CardContent>
                                     <Typography variant="h6" gutterBottom component="div">
                                         ORDINE: {ord.id_order}

@@ -4,137 +4,38 @@ import style from "../styles/Cart.module.css";
 import Link from "next/link";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import {
     PayPalScriptProvider,
-    PayPalButtons,
-    usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
-import { reset } from "../redux/cartSlice";
-
-export default function LogMenu({ user, cart }) {
-
-    const router = useRouter();
-    const dispatch = useDispatch();
-    const amount = cart.total;
-    const currency = "EUR";
-    const [logged, setLogged] = useState(null);
-    const [inputs, setInputs] = useState({
-        
-            id_client: parseInt(user.usr),
-            cart_total: cart.total,
-            products: cart.products,
-    });
-
     
-    const createOrder = async () => {
-       
-        try {
-            const res = await axios.post('http://localhost:80/api/products/order', inputs);
-            if (res.status === 200) {
-                dispatch(reset());
-                router.push(`usr/${user.usr}/orders/${res.data.id_order}/?usr=${user.usr}`);
-            }
-        } catch (err) {
-            console.log(err);
-        }
+} from "@paypal/react-paypal-js";
+import ButtonWrapper from "../components/ButtonWrapper";
+
+export default function LogMenu({ cart }) {
+
+    const { isFetching, error } = useSelector((state) => state.user);
+    let user_id = 0;
+
+    if (isFetching) {
+
+        user_id = useSelector((state) => state.user.currentUser.id);
     }
 
-    const verifyUser = async () => {
-        const id_user = (parseInt(user.usr));
-        try {
-            const res = await axios.get(`http://localhost:80/api/user/${id_user}`);
-            
-            if (res.data.email === undefined) {
-                setLogged(false);
-            }
-            else{
-                setLogged(true);
-            }   
-        } 
-        catch (err) {
-            
-            console.log(err);
-        }
-    }
-   
-    // Custom component to wrap the PayPalButtons and handle currency changes
-    const ButtonWrapper = ({ currency, showSpinner }) => {
-        // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
-        // This is the main reason to wrap the PayPalButtons in a new component
-        const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
-
-        useEffect(() => {
-            dispatch({
-                type: "resetOptions",
-                value: {
-                    ...options,
-                    currency: currency,
-                },
-            });
-        }, [currency, showSpinner]);
-
+    if (isFetching) {
         return (
-            <>
-                {(showSpinner && isPending) && <div className="spinner" />}
-                <PayPalButtons
-                    style={style}
-                    disabled={false}
-                    forceReRender={[amount, currency, style]}
-                    fundingSource={undefined}
-                    createOrder={(data, actions) => {
-                        return actions.order
-                            .create({
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            currency_code: currency,
-                                            value: amount,
-                                        },
-                                    },
-                                ],
-                            })
-                            .then((orderId) => {
-                                // Your code here after create the order
-
-                                return orderId;
-                            });
+            <div>
+                <PayPalScriptProvider
+                    options={{
+                        "client-id":
+                            "ARmEM0i9u-hUpQmPdKneDeQl__0co-SN56SFM4tnIT4SLT4Nt9VApTJoRS-XM-gkBM08e5uFNTkRbhag",
+                        components: "buttons",
+                        currency: "EUR",
+                        "disable-funding": "credit,card,p24,sofort,mybank"
                     }}
-                    onApprove={function () {
-                        createOrder();
-                        
-                    }}
-                />
-            </>
-        );
-    };
-
-    if (logged == null) { 
-        return (
-        <button onClick={() => verifyUser()} className={style.button}>
-                Effettua Ordine!
-        </button>)
-} 
-    else if (logged) {
-        return (
-            <>
-                <div className={style.right}>
-                    <PayPalScriptProvider
-                        options={{
-                            "client-id":
-                                "ARmEM0i9u-hUpQmPdKneDeQl__0co-SN56SFM4tnIT4SLT4Nt9VApTJoRS-XM-gkBM08e5uFNTkRbhag",
-                            components: "buttons",
-                            currency: "eur",
-                            "disable-funding": "credit,card,p24,sofort,mybank",
-                        }}
-                    >
-                        <ButtonWrapper currency={currency} showSpinner={false}/>
-                    </PayPalScriptProvider>
-                </div>
-            </>
+                >
+                    <ButtonWrapper cart={cart} user_id={user_id} />
+                </PayPalScriptProvider>
+            </div>
         )
     }
     else {

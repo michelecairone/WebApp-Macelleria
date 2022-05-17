@@ -1,22 +1,33 @@
 import Layout from "../components/Layout";
 import "../styles/globals.css";
-import store from "../redux/store";
+import { store, persistor } from "../redux/store";
 import { Provider } from "react-redux";
 import { useRouter } from "next/router";
+import { PersistGate } from 'redux-persist/integration/react'
+import { useSelector } from "react-redux";
+
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
+import Register from "../pages/usr/register";
+import Login from "../pages/usr/login";
+
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-  const param = { usr: router.query.usr, auth: false}
-  console.log("prima di MYAPP");
-  console.log(param.usr);
-  console.log("dopo di MYAPP");
   
   return (
     <Provider store={store}>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-      <Layout user={param}>
-        <Component {...pageProps} user={param} />
-      </Layout>
+      <PersistGate loading={null} persistor={persistor}>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+        <Layout >
+          <Component {...pageProps} />
+        </Layout>
+      </PersistGate>
     </Provider>
   );
 }

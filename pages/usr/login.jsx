@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ConstructionOutlined } from "@mui/icons-material";
+import { loginR } from "../../redux/apiCall";
+import { useDispatch, useSelector } from "react-redux";
 
 const theme = createTheme({
   palette: {
@@ -29,12 +31,13 @@ const theme = createTheme({
   },
 });
 
-const Login = ({user}) => {
+const Login = () => {
 
   const router = useRouter();
-  const [error, setError] = useState(false);
   const [inputs, setInputs] = useState([]);
-  const [usrDetail, setUsrDetail] = useState([]);
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.user);
+  
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -42,31 +45,15 @@ const Login = ({user}) => {
     setInputs(values => ({ ...values, [name]: value }));
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+
     event.preventDefault();
-    axios.post('http://localhost:80/api/user/login', inputs).then(function (response) {
-      console.log(response.data);
-      const usr = response.data.id;
-      
-      
-      if (response.data == false) {
-        user.auth = false;
-        setError(true);
-      }
-      else if (response.data.admin == true){
-        router.push({
-          pathname: '/usr/admin',
-          query: { usr },
-        })
-    
-      }
-      else {
-        router.push({
-          pathname: '/',
-          query: {usr},
-        })
-      }
-    });
+    let vrf = await loginR(dispatch, inputs);
+    if (vrf){
+      router.push("/");
+    }
+    console.log(vrf);
+
   };
 
   return (
