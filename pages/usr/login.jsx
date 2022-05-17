@@ -31,12 +31,12 @@ const theme = createTheme({
   },
 });
 
-const Login = ({user}) => {
+const Login = () => {
 
   const router = useRouter();
   const [inputs, setInputs] = useState([]);
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.user);
   
 
   const handleChange = (event) => {
@@ -45,12 +45,15 @@ const Login = ({user}) => {
     setInputs(values => ({ ...values, [name]: value }));
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async (event) => {
 
-    loginR(dispatch,inputs);
-    if(isFetching) router.push("/");
-    
+    event.preventDefault();
+    let vrf = await loginR(dispatch, inputs);
+    if (vrf){
+      router.push("/");
+    }
+    console.log(vrf);
+
   };
 
   return (

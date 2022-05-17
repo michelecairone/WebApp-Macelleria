@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
-export default function Orders({ orders }) {
+export default function index({ orders }) {
 
     const user = useSelector((state) => state.user);
 

@@ -74,6 +74,10 @@ const Navbar = () => {
         setAnchorElUser(null);
     };
 
+    function refreshPage() {
+        window.location.reload();
+    }
+
     function Autenticato() {
         return (
             <>
