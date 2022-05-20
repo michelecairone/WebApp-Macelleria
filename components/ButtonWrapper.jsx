@@ -59,7 +59,7 @@ export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
             <PayPalButtons
                 style={style}
                 disabled={false}
-                forceReRender={[cart.total, currency, style]}
+                forceReRender={[(cart.total).toFixed(2), currency, style]}
                 fundingSource={undefined}
                 createOrder={(data, actions) => {
                     return actions.order
@@ -68,7 +68,7 @@ export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
                                 {
                                     amount: {
                                         currency_code: currency,
-                                        value: cart.total,
+                                        value: (cart.total).toFixed(2),
                                     },
                                 },
                             ],

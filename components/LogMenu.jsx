@@ -25,6 +25,7 @@ export default function LogMenu({ cart }) {
         return (
             <div>
                 <PayPalScriptProvider
+                    deferLoading={true}
                     options={{
                         "client-id":
                             "ARmEM0i9u-hUpQmPdKneDeQl__0co-SN56SFM4tnIT4SLT4Nt9VApTJoRS-XM-gkBM08e5uFNTkRbhag",

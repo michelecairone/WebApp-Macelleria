@@ -151,7 +151,7 @@ const Navbar = () => {
 
     function tab(){
 
-        if (user.currentUser !== null && user.currentUser.admin === 1){
+        if (user.currentUser !== null && user.currentUser.admin == true){
             return <Admin />
         } 
         else if (user.currentUser !== null) {
