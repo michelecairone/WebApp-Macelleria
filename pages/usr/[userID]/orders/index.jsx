@@ -23,7 +23,7 @@ export default function index({ orders }) {
                 }}
             >
                 {orders.map((ord) => (
-                    <Box sx={{ marginBottom: 2 }}>
+                    <Box key={ord.id_order} sx={{ marginBottom: 2 }}>
                         <Card key={ord.id_order} sx={{ minWidth: 700 }}>
                             <Link href={`/usr/${user.currentUser.id}/orders/${ord.id_order}/`} passHref>
                                 <CardContent>
