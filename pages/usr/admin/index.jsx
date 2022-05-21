@@ -14,16 +14,7 @@ import UpdateProduct from "../../../components/UpdateProduct";
 import Link from "next/link";
 import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#b7903c',
-      contrastText: '#fff',
-    },
-  },
-})
 
 export default function Index({ orders }) {
 
@@ -51,13 +42,13 @@ export default function Index({ orders }) {
     <>
       <div className={styles.container}>
         <div className={styles.item}>
-          <ThemeProvider theme={theme}>
-            <Link href={`/usr/admin/products`} passHref>
-              <Button variant="outlined" size="small" >
-                Visualizza prodotti
-              </Button>
-            </Link>
-          </ThemeProvider>
+
+          <Link href={`/usr/admin/products`} passHref>
+            <Button variant="outlined" size="small" >
+              Visualizza prodotti
+            </Button>
+          </Link>
+
           <h1 className={styles.title}>Ordini</h1>
           <table className={styles.table}>
             <tbody>

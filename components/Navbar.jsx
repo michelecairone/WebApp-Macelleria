@@ -20,27 +20,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import { reset } from "../redux/userRedux";
-
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#d40000',
-        },
-        secondary: {
-            main: '#fff',
-        },
-        error: {
-            main: '#ef5350',
-            contrastText: '#fff',
-        },
-    },
-});
-
-const pages = { Home: '/', Prodotti: '/#prodotti', Contatti: '/#contatti' };
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 const Navbar = () => {
@@ -164,7 +145,7 @@ const Navbar = () => {
 
 
     return (
-        <ThemeProvider theme={theme}>
+        
             <AppBar position="sticky">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
@@ -294,7 +275,7 @@ const Navbar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-        </ThemeProvider >
+ 
     );
 };
 export default Navbar;

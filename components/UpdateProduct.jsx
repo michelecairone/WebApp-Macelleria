@@ -9,22 +9,9 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import * as React from 'react';
 import { useState } from "react";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styles from "../styles/Admin.module.css";
 import MenuItem from '@mui/material/MenuItem';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            // light: will be calculated from palette.primary.main,
-            main: '#b7903c',
-            // dark: will be calculated from palette.primary.main,
-            // contrastText: will be calculated to contrast with palette.primary.main
-            contrastText: '#fff'
-        }
-
-    },
-});
 
 const style = {
     position: 'absolute',
@@ -100,118 +87,117 @@ export default function UpdateProduct({ product }) {
             >
                 <Box sx={style}>
                     <Button onClick={handleClose}>X</Button>
-                    <ThemeProvider theme={theme}>
-                        <Container component="main" maxWidth="xs">
-                            <CssBaseline />
-                            <Box
-                                sx={{
-                                    marginTop: 8,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    marginBottom: 8,
-                                }}>
-                                <Typography component="h1" variant="h5">
-                                    Modifica Prodotto
-                                </Typography>
-                                <Box component="form" noValidate sx={{ mt: 3 }}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                name="name"
-                                                type="text"
-                                                defaultValue={`${product.name}`}
-                                                required
-                                                fullWidth
-                                                label="Nome"
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={15} sm={6}>
-                                            <TextField
-                                                name="image"
-                                                type="text"
-                                                defaultValue={`${product.image}`}
-                                                required
-                                                fullWidth
-                                                label="Percorso foto"
-                                                autoFocus
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                type="text"
-                                            
-                                                fullWidth
-                                                size='large'
-                                                label="Descrizione"
-                                                name="description"
-                                                defaultValue={`${product.description}`}
-                                                rows={10}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6} sm={5}>
-                                            <TextField
-                                                type="tel"
-                                                required
-                                                fullWidth
-                                                label="Prezzo al Kg"
-                                                name="price"
-                                                defaultValue={`${product.price}`}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={5}>
-                                            <TextField
-                                                select
-                                                label="Categoria"
-                                                value={category}
-                                                onChange={handleCategory}
-                                                name="id_category"
-                                            >
-                                                {cat.map((option) => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
 
-                                        </Grid>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                marginTop: 8,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                marginBottom: 8,
+                            }}>
+                            <Typography component="h1" variant="h5">
+                                Modifica Prodotto
+                            </Typography>
+                            <Box component="form" noValidate sx={{ mt: 3 }}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            name="name"
+                                            type="text"
+                                            defaultValue={`${product.name}`}
+                                            required
+                                            fullWidth
+                                            label="Nome"
+                                            onChange={handleChange}
+                                        />
                                     </Grid>
-                                    <Box
-                                        sx={{
+                                    <Grid item xs={15} sm={6}>
+                                        <TextField
+                                            name="image"
+                                            type="text"
+                                            defaultValue={`${product.image}`}
+                                            required
+                                            fullWidth
+                                            label="Percorso foto"
+                                            autoFocus
+                                            onChange={handleChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            type="text"
 
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between'
-
-                                        }}>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            sx={{ mt: 3, mb: 2, order: 2 }}
-                                            onClick={handleSave}
-
+                                            fullWidth
+                                            size='large'
+                                            label="Descrizione"
+                                            name="description"
+                                            defaultValue={`${product.description}`}
+                                            rows={10}
+                                            onChange={handleChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} sm={5}>
+                                        <TextField
+                                            type="tel"
+                                            required
+                                            fullWidth
+                                            label="Prezzo al Kg"
+                                            name="price"
+                                            defaultValue={`${product.price}`}
+                                            onChange={handleChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={5}>
+                                        <TextField
+                                            select
+                                            label="Categoria"
+                                            value={category}
+                                            onChange={handleCategory}
+                                            name="id_category"
                                         >
-                                            Salva
-                                        </Button>
-                                        <Button
-                                            type="submit"
-                                            variant="outlined"
-                                            sx={{ mt: 3, mb: 2, order: 1 }}
-                                            onClick={handleClose}
+                                            {cat.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
 
-                                        >
-                                            Annulla
-                                        </Button>
-                                    </Box>
+                                    </Grid>
+                                </Grid>
+                                <Box
+                                    sx={{
+
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+
+                                    }}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2, order: 2 }}
+                                        onClick={handleSave}
+
+                                    >
+                                        Salva
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        variant="outlined"
+                                        sx={{ mt: 3, mb: 2, order: 1 }}
+                                        onClick={handleClose}
+
+                                    >
+                                        Annulla
+                                    </Button>
                                 </Box>
                             </Box>
-                        </Container>
-                    </ThemeProvider>
+                        </Box>
+                    </Container>
                 </Box>
             </Modal>
         </>

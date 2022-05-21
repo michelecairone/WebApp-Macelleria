@@ -8,20 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import * as React from 'react';
 import { useRouter } from "next/router";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            // light: will be calculated from palette.primary.main,
-            main: '#b7903c',
-            // dark: will be calculated from palette.primary.main,
-            // contrastText: will be calculated to contrast with palette.primary.main
-            contrastText: '#fff'
-        }
-
-    },
-});
 
 
 export default function ProfileDetail({ user, profile }) {
@@ -64,7 +51,7 @@ export default function ProfileDetail({ user, profile }) {
     }
 
     return (<>
-        <ThemeProvider theme={theme}>
+        
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -213,7 +200,7 @@ export default function ProfileDetail({ user, profile }) {
 
                 </Box>
             </Container>
-        </ThemeProvider>
+
     </>);
 
 }

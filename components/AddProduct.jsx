@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useState } from "react";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -24,14 +23,6 @@ const style = {
     p: 2,
 };
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#b7903c',
-            contrastText: '#fff'
-        },
-    },
-});
 
 const cat = [
     {
@@ -70,7 +61,7 @@ export default function AddProduct() {
     };
 
     const handleSubmit = async (event) => {
-       
+
         event.preventDefault();
         await axios.post('http://localhost:80/api/products/save', inputs).then(function (response) {
             window.location.reload();
@@ -78,8 +69,8 @@ export default function AddProduct() {
     }
 
     return (
+        <>
 
-        <ThemeProvider theme={theme}>
             <Button variant="outlined" size="small" onClick={handleOpen}>
                 Aggiungi Prodotto
             </Button>
@@ -92,98 +83,98 @@ export default function AddProduct() {
             >
                 <Box sx={style}>
                     <Button onClick={handleClose}>X</Button>
-                    <ThemeProvider theme={theme}>
-                        <Container component="main" maxWidth="xs">
-                            <CssBaseline />
-                            <Box
-                                sx={{
-                                    marginTop: 1,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    marginBottom: 1,
-                                }}
-                            >
-                                <Typography component="h1" variant="h5">
-                                    Aggiungi Prodotto
-                                </Typography>
-                                <Box component="form" noValidate sx={{ mt: 3 }}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                name="name"
-                                                type="text"
-                                                required
-                                                fullWidth
-                                                label="Nome"
 
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={15} sm={6}>
-                                            <TextField
-                                                name="image"
-                                                required
-                                                fullWidth
-                                                label="Percorso foto"
-                                                autoFocus
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                
-                                                fullWidth
-                                                size='large'
-                                                label="Descrizione"
-                                                name="description"
-                                                rows={10}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6} sm={5}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                label="Prezzo al Kg"
-                                                name="price"
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={5}>
-                                            <TextField
-                                                select
-                                                label="Categoria"
-                                                value={category}
-                                                onChange={handleCategory}
-                                                name="id_category"
-                                                fullWidth
-                                                required
-                                            >
-                                                {cat.map((option) => (
-                                                    <MenuItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </Grid>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                marginTop: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                marginBottom: 1,
+                            }}
+                        >
+                            <Typography component="h1" variant="h5">
+                                Aggiungi Prodotto
+                            </Typography>
+                            <Box component="form" noValidate sx={{ mt: 3 }}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            name="name"
+                                            type="text"
+                                            required
+                                            fullWidth
+                                            label="Nome"
+
+                                            onChange={handleChange}
+                                        />
                                     </Grid>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                        onClick={handleSubmit}
-                                    >
-                                        Aggiungi
-                                    </Button>
-                                </Box>
+                                    <Grid item xs={15} sm={6}>
+                                        <TextField
+                                            name="image"
+                                            required
+                                            fullWidth
+                                            label="Percorso foto"
+                                            autoFocus
+                                            onChange={handleChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+
+                                            fullWidth
+                                            size='large'
+                                            label="Descrizione"
+                                            name="description"
+                                            rows={10}
+                                            onChange={handleChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} sm={5}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            label="Prezzo al Kg"
+                                            name="price"
+                                            onChange={handleChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={5}>
+                                        <TextField
+                                            select
+                                            label="Categoria"
+                                            value={category}
+                                            onChange={handleCategory}
+                                            name="id_category"
+                                            fullWidth
+                                            required
+                                        >
+                                            {cat.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    onClick={handleSubmit}
+                                >
+                                    Aggiungi
+                                </Button>
                             </Box>
-                        </Container>
-                    </ThemeProvider>
+                        </Box>
+                    </Container>
+
                 </Box>
             </Modal>
-        </ThemeProvider>
+        </>
 
     );
 }

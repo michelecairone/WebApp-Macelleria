@@ -7,16 +7,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#b7903c',
-            contrastText: '#fff',
-        },
-    },
-})
 
 export default function Filter({ setCount, setList }) {
 
@@ -53,41 +44,40 @@ export default function Filter({ setCount, setList }) {
 
     return (
 
-        <ThemeProvider theme={theme}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-                <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-                    <FormLabel component="legend">Filtri di ricerca</FormLabel>
-                    <FormGroup sx={{ flexDirection: 'row' }}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={Bianca} onChange={handleChange} name="Bianca" />
-                            }
-                            label="Bianca"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={Rossa} onChange={handleChange} name="Rossa" />
-                            }
-                            label="Rossa"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={Preparati} onChange={handleChange} name="Preparati" />
-                            }
-                            label="Preparati"
-                        />
-                    </FormGroup>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        onClick={handleSubmit}
-                    >
-                        Applica
-                    </Button>
-                </FormControl>
-            </Box>
-        </ThemeProvider>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+            <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+                <FormLabel component="legend">Filtri di ricerca</FormLabel>
+                <FormGroup sx={{ flexDirection: 'row' }}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={Bianca} onChange={handleChange} name="Bianca" />
+                        }
+                        label="Bianca"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={Rossa} onChange={handleChange} name="Rossa" />
+                        }
+                        label="Rossa"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={Preparati} onChange={handleChange} name="Preparati" />
+                        }
+                        label="Preparati"
+                    />
+                </FormGroup>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={handleSubmit}
+                >
+                    Applica
+                </Button>
+            </FormControl>
+        </Box>
+
     );
 }
