@@ -1,43 +1,15 @@
 import axios from "axios";
 import React from "react";
-import Image from "next/image";
 import { useState } from "react";
 import styles from "../../../styles/Admin.module.css";
-import style from "../../../styles/Add.module.css";
-import { useRouter } from "next/router";
-import Add from "../../../components/Add";
-import AddButton from "../../../components/Add";
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import AddProduct from "../../../components/AddProduct";
-import UpdateProduct from "../../../components/UpdateProduct";
 import Link from "next/link";
-import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
-
 
 export default function Index({ orders }) {
 
   const [orderList, setOrderList] = useState(orders);
-  const status = ["in preparazione", "in consegna", "consegnato"];
-
-  const handleStatus = async (id) => {
-    const item = orderList.filter((order) => order._id === id)[0];
-    const currentStatus = item.status;
-
-    try {
-      const res = await axios.put("http://localhost:3000/api/orders/" + id, {
-        status: currentStatus + 1,
-      });
-      setOrderList([
-        res.data,
-        ...orderList.filter((order) => order._id !== id),
-      ]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  
   return (
     <>
       <div className={styles.container}>
@@ -73,7 +45,7 @@ export default function Index({ orders }) {
                   <td>{order.name} {order.surname}</td>
                   <td>{order.total}€</td>
                   <td>
-                    {order.date_ord /*order.method === 0 ? <span>cash</span> : <span>paid</span>*/}
+                    {order.date_ord}
                   </td>
                   <td>{order.state}</td>
                 </tr>
@@ -86,18 +58,7 @@ export default function Index({ orders }) {
   );
 };
 
-export const getServerSideProps = async (ctx) => {
-  /*const myCookie = ctx.req?.cookies || "";
-
-  if (myCookie.token !== process.env.TOKEN) {
-    return {
-      redirect: {
-        destination: "/admin/login",
-        permanent: false,
-      },
-    };
-  }*/
-
+export const getServerSideProps = async () => {
 
   const orderRes = await axios.get("http://localhost:80/api/admin/orders");
 

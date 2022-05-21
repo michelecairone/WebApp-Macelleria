@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import styles from "../../styles/Login.module.css";
-
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,7 +15,6 @@ import Container from '@mui/material/Container';
 const Register = () => {
 
   const router = useRouter();
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -147,4 +144,4 @@ const Register = () => {
   );
 }
 
-export default Register
+export default Register;

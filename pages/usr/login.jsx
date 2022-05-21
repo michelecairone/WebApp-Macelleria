@@ -13,15 +13,12 @@ import Container from '@mui/material/Container';
 import { loginR } from "../../redux/apiCall";
 import { useDispatch, useSelector } from "react-redux";
 
-
-
 const Login = () => {
 
   const router = useRouter();
   const [inputs, setInputs] = useState([]);
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.user);
-
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -36,12 +33,10 @@ const Login = () => {
     if (vrf) {
       router.push("/");
     }
-    console.log(vrf);
 
   };
 
   return (
-
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
@@ -96,7 +91,6 @@ const Login = () => {
       </Box>
 
     </Container>
-
   );
 };
 

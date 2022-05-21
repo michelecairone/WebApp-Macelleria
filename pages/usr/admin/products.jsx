@@ -76,18 +76,8 @@ export default function products({ products }) {
     );
 };
 
-export const getServerSideProps = async (ctx) => {
-    /*const myCookie = ctx.req?.cookies || "";
-  
-    if (myCookie.token !== process.env.TOKEN) {
-      return {
-        redirect: {
-          destination: "/admin/login",
-          permanent: false,
-        },
-      };
-    }*/
-
+export const getServerSideProps = async () => {
+   
     const productRes = await axios.get("http://localhost:80/api/products");
     
     return {

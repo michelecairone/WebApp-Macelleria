@@ -1,33 +1,16 @@
 import styles from "../styles/Cart.module.css";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import {
-  PayPalScriptProvider,
-  PayPalButtons,
-  usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { reset } from "../redux/cartSlice";
-import OrderDetail from "../components/OrderDetail";
 import LogMenu from "../components/LogMenu";
 import ClearIcon from '@mui/icons-material/Clear';
 import Button from '@mui/material/Button';
 import { rmvProduct } from "../redux/cartSlice";
 
-const Cart = ({ user }) => {
+const Cart = () => {
 
   const cart = useSelector((state) => state.cart);
-  const [logged, setLogged] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [cash, setCash] = useState(false);
-  const amount = cart.total;
-  const currency = "USD";
-  const style = { layout: "vertical" };
   const dispatch = useDispatch();
-  const router = useRouter();
-
+ 
   const deleteProduct = (id) => {
     console.log(id);
     dispatch(rmvProduct(id));
@@ -97,7 +80,7 @@ const Cart = ({ user }) => {
             <b className={styles.totalTextTitle}>Totale:</b>{(cart.total).toFixed(2)} €
           </div>
           <div className={styles.totalText}>
-            <LogMenu user={user} cart={cart} />
+            <LogMenu cart={cart} />
           </div>
         </div>
       </div>

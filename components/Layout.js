@@ -26,12 +26,12 @@ const theme = createTheme({
   },
 });
 
-const Layout = ({ children, user }) => {
+const Layout = ({ children }) => {
 
   return (
     <>
       <ThemeProvider theme={themeNav}>
-        <Navbar user={user} />
+        <Navbar/>
       </ThemeProvider>
       <ThemeProvider theme={theme}>
         {children}

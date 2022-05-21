@@ -4,7 +4,7 @@ import Link from "next/link";
 import AddCart from "./AddCart";
 import Typography from '@mui/material/Typography';
 
-const ProductCard = ({ product, user }) => {
+const ProductCard = ({ product }) => {
 
   return (
     <div className={styles.container} >
@@ -15,11 +15,10 @@ const ProductCard = ({ product, user }) => {
           
           <Typography variant="h6" gutterBottom>{ product.name }</Typography>
           <Typography variant="overline" display="block" gutterBottom>€ { product.price } al kg</Typography>
-          <Typography variant="caption" display="block" gutterBottom>Dettagli v</Typography>
+          <Typography variant="caption" display="block" gutterBottom>{product.description} </Typography>
         </div>
       </Link>
       <AddCart product={ product }/>
-      
     </div>
   );
 };

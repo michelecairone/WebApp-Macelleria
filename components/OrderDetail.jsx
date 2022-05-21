@@ -11,7 +11,6 @@ import Grid from '@mui/material/Grid';
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-
 const stato = [
     {
         value: '1',
@@ -27,9 +26,8 @@ const stato = [
     },
 ];
 
-
-
 export default function OrderDetail({ products }) {
+
     const [state, setState] = useState('');
 
     const handleState = (event) => {
@@ -38,11 +36,14 @@ export default function OrderDetail({ products }) {
     };
 
     const updateState = async () => {
-        console.log(state);
-        await axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state).then(function (response) {
-            console.log(response.data);
+        try{
+            const res = await axios.put(`http://localhost:80/api/order_state/${products[0].id_order}`, state);
+            console.log(res.data);
 
-        });
+        }
+        catch(err){
+            console.log('OrderDetail (updateState):', err);
+        }
     }
 
     return (

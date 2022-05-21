@@ -1,11 +1,8 @@
 import axios from "axios";
 import OrderDetail from "../../../components/OrderDetail";
-import { useRouter } from "next/router";
 
-export default function orderDetail({ id, products}) {
+export default function orderDetail({ products }) {
     
-    console.log(products);
-
     return (
         <>
             <OrderDetail products={products} />
