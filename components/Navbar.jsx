@@ -1,9 +1,7 @@
 import Image from "next/image";
-import styles from "../styles/Navbar.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -19,10 +17,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-
 import { reset } from "../redux/userRedux";
-
+import { resetP } from "../redux/cartSlice";
 
 const Navbar = () => {
 
@@ -35,10 +31,12 @@ const Navbar = () => {
     
     const user = useSelector((state) => state.user);
     
-  
     const quit = (event) => {
-        dispatch(reset());
         handleCloseUserMenu(event);
+        dispatch(resetP());
+        dispatch(reset());
+        window.location.replace("/usr/login");
+           
     };
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -85,14 +83,14 @@ const Navbar = () => {
         return (
             <>
                 <Link href="/usr/login" passHref>
-                    <MenuItem onClick={quit}>
+                    <MenuItem onClick={handleCloseUserMenu}>
 
                         <Typography textAlign="center">Accedi</Typography>
 
                     </MenuItem>
                 </Link>
                 <Link href="/usr/register" passHref>
-                    <MenuItem onClick={quit}>
+                    <MenuItem onClick={handleCloseUserMenu}>
 
                         <Typography textAlign="center">Registrati</Typography>
 
@@ -196,7 +194,7 @@ const Navbar = () => {
                                         <Typography textAlign="center">Home</Typography>
                                     </MenuItem>
                                 </Link>
-                                <Link href="/#prodotti" passHref>
+                                <Link href="#prodotti" passHref>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Prodotti</Typography>
                                     </MenuItem>
@@ -226,7 +224,7 @@ const Navbar = () => {
                                     Home
                                 </Button>
                             </Link>
-                            <Link href="/#prodotti" passHref>
+                            <Link href="#prodotti" passHref>
                                 <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Prodotti
                                 </Button>

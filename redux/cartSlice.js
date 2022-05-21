@@ -36,7 +36,7 @@ const cartSlice = createSlice({
       }
      
     },
-    reset: (state) => {
+    resetP: (state) => {
       state.products = [];
       state.quantity = 0;
       state.total = 0;
@@ -44,5 +44,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addProduct, rmvProduct, reset } = cartSlice.actions;
+export const { addProduct, rmvProduct, resetP } = cartSlice.actions;
 export default cartSlice.reducer;
