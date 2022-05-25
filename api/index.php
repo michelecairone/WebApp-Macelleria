@@ -233,14 +233,12 @@ switch ($method) {
 
             if ($path[3] === 'login') {
                 $sql = "SELECT * FROM clients";
-                $sql .= " WHERE email = :email AND password = :password";
+                $sql .= " WHERE email = :email ";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':email', $user->email);
-                $stmt->bindParam(':password', $user->password);
-
                 $stmt->execute();
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                echo json_encode($user);
+                $usr = $stmt->fetch(PDO::FETCH_ASSOC);
+                echo json_encode($usr);
             }
 
             if ($path[3] === 'save') {
