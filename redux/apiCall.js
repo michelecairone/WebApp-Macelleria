@@ -1,27 +1,25 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
 import axios from "axios";
-import { useRouter } from "next/router";
+import passwordHash from 'password-hash';
 
 
-export const loginR = async (dispatch, inputs) => {
+export const loginR = async (dispatch, email, password) => {
     
     
     try {
-        const res = await axios.post('http://localhost:80/api/user/login', inputs);
-        if (res.data == false) {
-            dispatch(loginFailure());
-            return false;  
-        }
-        else if (res.data.admin == true) {
-            dispatch(loginSuccess(res.data)); 
+        const res = await axios.post('http://localhost:80/api/user/login', email);
+
+        if (passwordHash.verify(password, res.data.password)) {
+            dispatch(loginSuccess(res.data));
+            return true;  
             
         }
         else {
-            dispatch(loginSuccess(res.data));
-             
+            dispatch(loginFailure());
+            return false;  
+
         }
-        return true;
-        
+          
     } catch (err) {
         dispatch(loginFailure());
         return false;

@@ -1964,6 +1964,11 @@
     "json-parse-even-better-errors" "^2.3.0"
     "lines-and-columns" "^1.1.6"
 
+"password-hash@^1.2.2":
+  "integrity" "sha1-O0UfAU3ksuHr+g5Uk7lRexBjrx0="
+  "resolved" "https://registry.npmjs.org/password-hash/-/password-hash-1.2.2.tgz"
+  "version" "1.2.2"
+
 "path-exists@^3.0.0":
   "integrity" "sha1-zg6+ql94yxiSXqfYENe1mwEP1RU="
   "resolved" "https://registry.npmjs.org/path-exists/-/path-exists-3.0.0.tgz"

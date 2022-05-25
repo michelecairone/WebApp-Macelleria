@@ -194,7 +194,7 @@ const Navbar = () => {
                                         <Typography textAlign="center">Home</Typography>
                                     </MenuItem>
                                 </Link>
-                                <Link href="#prodotti" passHref>
+                                <Link href="/#prodotti" passHref>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">Prodotti</Typography>
                                     </MenuItem>
@@ -224,7 +224,7 @@ const Navbar = () => {
                                     Home
                                 </Button>
                             </Link>
-                            <Link href="#prodotti" passHref>
+                            <Link href="/#prodotti" passHref>
                                 <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                                     Prodotti
                                 </Button>

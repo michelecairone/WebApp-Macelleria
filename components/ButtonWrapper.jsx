@@ -9,7 +9,7 @@ import {
     PayPalButtons,
     usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
-import { reset } from "../redux/cartSlice";
+import { resetP } from "../redux/cartSlice";
 
 // Custom component to wrap the PayPalButtons and handle currency changes
 export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
@@ -44,7 +44,7 @@ export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
         try {
             const res = await axios.post('http://localhost:80/api/products/order', inputs);
             if (res.status === 200) {
-                dispatch2(reset());
+                dispatch2(resetP());
                 router.push(`usr/${user_id}/orders/${res.data.id_order}/`);
             }
         } catch (err) {

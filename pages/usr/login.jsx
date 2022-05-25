@@ -17,6 +17,7 @@ const Login = () => {
 
   const router = useRouter();
   const [inputs, setInputs] = useState([]);
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.user);
 
@@ -29,7 +30,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
 
     event.preventDefault();
-    let vrf = await loginR(dispatch, inputs);
+    let vrf = await loginR(dispatch, inputs, password);
     if (vrf) {
       router.push("/");
     }
@@ -68,7 +69,7 @@ const Login = () => {
             name="password"
             label="Password"
             type="password"
-            onChange={handleChange}
+            onChange={(e) => setPassword(e.target.value)}
           />
           {error && <span className={styles.error}>Email o password errate!</span>}
           <Button

@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
+import passwordHash from 'password-hash';
 
 const Register = () => {
 
@@ -18,18 +18,22 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     axios.post('http://localhost:80/api/user/save', inputs).then(function (response) {
       console.log(response.data);
       router.push('/usr/login');
 
     });
   }
+
   const [inputs, setInputs] = useState([]);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
+    if (name === "password"){
+      value = passwordHash.generate(value);
+    }
     setInputs(values => ({ ...values, [name]: value }));
   }
 
