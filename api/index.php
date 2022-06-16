@@ -61,7 +61,7 @@ switch ($method) {
                         $stmt->execute();
                         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     } else {
-                        $sql = "SELECT m.id_order, m.date_ord, o.state FROM make m, orders o where m.id_client = :id AND m.id_order = o.id";
+                        $sql = "SELECT m.id_order, m.date_ord, o.state, o.total FROM make m, orders o where m.id_client = :id AND m.id_order = o.id ORDER BY m.id_order DESC";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':id', $path[3]);
                         $stmt->execute();

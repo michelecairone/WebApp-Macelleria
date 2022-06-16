@@ -33,21 +33,17 @@ export default function index({ orders }) {
                                     <Typography variant="h7" component="div">
                                         Data: {ord.date_ord}
                                     </Typography>
-                                    
                                     <Typography variant="h7" component="div">
                                        Stato: {ord.state}
                                     </Typography>
-
-
+                                    <Typography variant="h7" component="div">
+                                        Totale: {ord.total}€
+                                    </Typography>
                                 </CardContent>
                             </Link>
-
                         </Card>
                     </Box>
                 ))}
-
-
-
             </Box>
         </Container>
     );

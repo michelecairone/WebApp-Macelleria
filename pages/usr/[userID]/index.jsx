@@ -8,8 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import * as React from 'react';
 import { useRouter } from "next/router";
-
-
+import passwordHash from 'password-hash';
 
 export default function ProfileDetail({ user, profile }) {
     const router = useRouter();
@@ -47,11 +46,15 @@ export default function ProfileDetail({ user, profile }) {
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
+        if (name === "password") {
+            value = passwordHash.generate(value);
+        }
         setInputs(values => ({ ...values, [name]: value }));
     }
 
-    return (<>
-        
+    return (
+        <>
+
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -143,6 +146,7 @@ export default function ProfileDetail({ user, profile }) {
                                 <TextField
                                     name="password"
                                     label="Password"
+                                    type="password"
                                     fullWidth
                                     defaultValue={`${profile.password}`}
                                     InputProps={{
@@ -201,7 +205,8 @@ export default function ProfileDetail({ user, profile }) {
                 </Box>
             </Container>
 
-    </>);
+        </>
+    );
 
 }
 
