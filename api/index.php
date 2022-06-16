@@ -54,19 +54,20 @@ switch ($method) {
             if (isset($path[3]) && is_numeric($path[3])) {
                 if (isset($path[4]) && ($path[4] === 'orders')) {
                     if (isset($path[5]) && is_numeric($path[5])) {
-                        $sql = "SELECT s.id_order, m.date_ord, p.id, p.name, p.image, s.amount, s.total, o.state FROM products p, shopping_cart s, make m, orders o
-                        WHERE p.id = s.id_product AND s.id_order = :id AND m.id_order = s.id_order AND o.id = m.id_order";
+                        $sql = "SELECT s.id_order, o.date_ord, p.id, p.name, p.image, s.amount, s.total, o.state FROM products p, order_detail s, orders o
+                        WHERE p.id = s.id_product AND s.id_order = :id AND o.id = s.id_order";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':id', $path[5]);
                         $stmt->execute();
-                        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     } else {
-                        $sql = "SELECT m.id_order, m.date_ord, o.state, o.total FROM make m, orders o where m.id_client = :id AND m.id_order = o.id ORDER BY m.id_order DESC";
+                        $sql = "SELECT o.id AS id_order, o.date_ord, o.state, o.total FROM orders as o where o.id_client = :id ORDER BY o.id DESC";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':id', $path[3]);
                         $stmt->execute();
-                        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     }
+                    echo json_encode($orders);
                 } else {
                     $sql = "SELECT * FROM clients";
                     $sql .= " WHERE id = :id";
@@ -74,33 +75,33 @@ switch ($method) {
                     $stmt->bindParam(':id', $path[3]);
                     $stmt->execute();
                     $users = $stmt->fetch(PDO::FETCH_ASSOC);
+                    echo json_encode($users);
                 }
             } else {
                 echo json_encode("errore utente non trovato");
             }
-            echo json_encode($users);
+            
         }
         if ($path[2] === 'admin') {
 
             if ($path[3] === 'orders') {
                 if (isset($path[4]) && is_numeric($path[4])) {
                     $sql = "SELECT c.id as 'id_client', c.name as 'name_client', c.surname, c.address, c.city, c.telephone, s.id_order, state, date_ord, p.id, p.name, p.image, s.amount, s.total
-                    FROM clients c, orders o, make m, products p, shopping_cart s
-                    WHERE m.id_order = o.id
-                    AND m.id_client = c.id
+                    FROM clients c, orders o, products p, order_detail s
+                    WHERE o.id_client = c.id
                     AND p.id = s.id_product
-                    AND s.id_order = :id AND m.id_order = s.id_order";
+                    AND o.id = s.id_order 
+                    AND s.id_order = :id ";
 
                     $stmt = $conn->prepare($sql);
                     $stmt->bindParam(':id', $path[4]);
                     $stmt->execute();
                     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 } else {
-                    $sql = 'SELECT id_order, c.id, name, surname, state, date_ord, total
-                      FROM clients c, orders o, make m
-                      WHERE m.id_order = o.id
-                      AND m.id_client = c.id
-                      ORDER BY date_ord DESC';
+                    $sql = "SELECT o.id as 'id_order', c.id, name, surname, state, date_ord, total
+                      FROM clients c, orders o
+                      WHERE o.id_client = c.id
+                      ORDER BY date_ord DESC";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -120,36 +121,28 @@ switch ($method) {
 
             if ($path[3] === 'order') {
 
-                $sql = "INSERT INTO make(id_order, id_client, date_ord)
-                        VALUES(null, :id_client, :date_ord)";
+                $sql = "INSERT INTO orders(id, id_client, date_ord, state, total)
+                        VALUES(null, :id_client, :date_ord, :state, :total)";
 
                 $stmt = $conn->prepare($sql);
 
                 $id_client = $input->id_client;
                 $data = date("Y-m-d H:i:s");
+                $state = "attesa di conferma";
                 $stmt->bindParam(':id_client', $id_client);
                 $stmt->bindParam(':date_ord', $data);
+                $stmt->bindParam(':state', $state);
+                $stmt->bindParam(':total', $input->cart_total);
                 $rst = $stmt->execute();
 
                 $objDb2 = new DbConnect;
                 $conn2 = $objDb2->connect();
-                $sql2 = 'SELECT id_order FROM make WHERE id_client = :id_client AND date_ord = (SELECT MAX(date_ord) FROM MAKE WHERE id_client = :id_client) ';
+                $sql2 = 'SELECT id AS id_order FROM orders WHERE id_client = :id_client AND date_ord = (SELECT MAX(date_ord) FROM orders WHERE id_client = :id_client) ';
 
                 $stmt2 = $conn2->prepare($sql2);
                 $stmt2->bindParam(':id_client', $id_client);
                 $stmt2->execute();
                 $id_order = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-                $objDb3 = new DbConnect;
-                $conn3 = $objDb3->connect();
-                $sql3 = "INSERT INTO orders(id, state, total)
-                            VALUES(:id_order, :state, :total)";
-                $state = "attesa di conferma";
-                $stmt3 = $conn3->prepare($sql3);
-                $stmt3->bindParam(':id_order', $id_order["id_order"]);
-                $stmt3->bindParam(':state', $state);
-                $stmt3->bindParam(':total', $input->cart_total);
-                $rst2 = $stmt3->execute();
 
                 $prodotti = $input->products;
 
@@ -158,7 +151,7 @@ switch ($method) {
                     $objDb4 = new DbConnect;
                     $conn4 = $objDb4->connect();
 
-                    $sql4 = "INSERT INTO shopping_cart(id_order, id_product, amount, total)
+                    $sql4 = "INSERT INTO order_detail (id_order, id_product, amount, total)
                              VALUES(:id_order, :id_product, :amount, :total)";
 
                     $stmt4 = $conn4->prepare($sql4);
