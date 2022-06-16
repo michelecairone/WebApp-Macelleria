@@ -12,7 +12,7 @@ import {
 import { resetP } from "../redux/cartSlice";
 
 // Custom component to wrap the PayPalButtons and handle currency changes
-export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
+export default function ButtonWrapper({ showSpinner, cart, user_id }) {
     // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
     // This is the main reason to wrap the PayPalButtons in a new component
     const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
@@ -21,14 +21,12 @@ export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
     const router = useRouter();
     const dispatch2 = useDispatch();
 
-
-    const [inputs, setInputs] = useState({
-
+    let inputs = ({
         id_client: parseInt(user_id),
         cart_total: cart.total,
         products: cart.products,
     });
-    
+
     useEffect(() => {
         dispatch({
             type: "resetOptions",
@@ -53,7 +51,7 @@ export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
     }
 
     return (
-        
+
         <>
             {(showSpinner && isPending) && <div className="spinner" />}
             <PayPalButtons
@@ -88,7 +86,7 @@ export default function ButtonWrapper  ({ showSpinner, cart, user_id })  {
     );
 };
 
-    
-    
+
+
 
 
