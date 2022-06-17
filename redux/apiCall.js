@@ -1,10 +1,8 @@
-import { loginFailure, loginStart, loginSuccess } from "./userRedux";
+import { loginFailure, loginSuccess } from "./userRedux";
 import axios from "axios";
 import passwordHash from 'password-hash';
 
-
 export const loginR = async (dispatch, email, password) => {
-    
     
     try {
         const res = await axios.post('http://localhost:80/api/user/login', email);

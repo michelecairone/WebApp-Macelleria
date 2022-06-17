@@ -12,7 +12,6 @@ import {
   REGISTER,
 } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-//import storage from "redux-persist/lib/storage";
 
 const createNoopStorage = () => {
   return {
