@@ -1,14 +1,10 @@
 import React from 'react';
 import 'reactjs-popup/dist/index.css';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import {
-    PayPalScriptProvider,
-    PayPalButtons,
-    usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { resetP } from "../redux/cartSlice";
 
 // Custom component to wrap the PayPalButtons and handle currency changes

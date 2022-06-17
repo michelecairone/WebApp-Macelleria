@@ -8,9 +8,6 @@ const userSlice = createSlice({
         error: false,
     },
     reducers: {
-        loginStart: (state) => {
-            state.isFetching = true;
-        },
         loginSuccess: (state, action) => {
             state.isFetching = true;
             state.currentUser = action.payload;

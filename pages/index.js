@@ -1,17 +1,17 @@
 import axios from "axios";
 import Head from "next/head";
-import { useState} from "react";
+import { useState } from "react";
 import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
 import styles from "../styles/Home.module.css";
 import Description from "../components/Description";
 import Filter from "../components/Filter";
 
-export default function Home({ productList, user }) {
+export default function Home({ productList }) {
 
   const [list, setList] = useState([]);
   const [count, setCount] = useState(true);
-  
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,8 +21,8 @@ export default function Home({ productList, user }) {
       </Head>
       <Featured />
       <Description />
-      <Filter setCount={setCount} setList={setList}/>
-      <a name="prodotti" id ="product">
+      <Filter setCount={setCount} setList={setList} />
+      <a name="prodotti" id="product">
         <ProductList productList={count ? productList : list} />
       </a>
     </div>

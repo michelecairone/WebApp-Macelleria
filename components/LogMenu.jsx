@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from "../styles/Product.module.css";
 import style from "../styles/Cart.module.css";
 import Link from "next/link";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
     PayPalScriptProvider,
     
@@ -46,11 +45,11 @@ export default function LogMenu({ cart }) {
                     <Popup trigger={<button className={style.button}> NON SEI LOGGATO </button>}
                         position="bottom">
                         <p> Per poter effettuare l'ordine bisogna <br />
-                            <span className={styles.price}> <Link href="/usr/login" passHref>Accedere</Link></span>
+                            <span className={style.button}> <Link href="/usr/login" passHref>Accedere</Link></span>
                             <br />
                             o
                             <br />
-                            <span className={styles.price}> <Link href="/usr/register" passHref>Registrarsi</Link> </span>
+                            <span className={style.button}> <Link href="/usr/register" passHref>Registrarsi</Link> </span>
                         </p>
                     </Popup>
                 </div>

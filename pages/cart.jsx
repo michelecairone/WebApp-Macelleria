@@ -10,7 +10,7 @@ const Cart = () => {
 
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
- 
+
   const deleteProduct = (id) => {
     console.log(id);
     dispatch(rmvProduct(id));
