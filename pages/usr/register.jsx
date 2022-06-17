@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import * as React from 'react';
+import styles from "../../styles/Login.module.css";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -15,14 +16,20 @@ import passwordHash from 'password-hash';
 const Register = () => {
 
   const router = useRouter();
+  const [error, setError] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     
     axios.post('http://localhost:80/api/user/save', inputs).then(function (response) {
-      console.log(response.data);
-      router.push('/usr/login');
+      console.log(response.data.status);
 
+      if (response.data.status !== undefined && response.data.status === 1){
+          router.push('/usr/login');
+        }
+      else {
+        setError(true);
+      } 
     });
   }
 
@@ -124,6 +131,7 @@ const Register = () => {
               />
             </Grid>
           </Grid>
+          {error && <span className={styles.error}>Compilare tutti i campi obbligatori!</span>}
           <Button
             type="submit"
             fullWidth
