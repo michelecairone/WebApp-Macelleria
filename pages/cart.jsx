@@ -70,15 +70,12 @@ const Cart = () => {
       <div className={styles.right}>
         <div className={styles.wrapper}>
           <h2 className={styles.title}>CARRELLO TOTALE</h2>
-          <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Totale parziale:</b>{(cart.total).toFixed(2)} €
-          </div>
-          <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Sconto:</b>0.00 €
-          </div>
+          
+          
           <div className={styles.totalText}>
             <b className={styles.totalTextTitle}>Totale:</b>{(cart.total).toFixed(2)} €
           </div>
+          <br></br>
           <div className={styles.totalText}>
             <LogMenu cart={cart} />
           </div>

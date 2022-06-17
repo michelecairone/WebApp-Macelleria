@@ -16,7 +16,7 @@ export default function Home({ productList }) {
     <div className={styles.container}>
       <Head>
         <title>Macelleria Minaudo</title>
-        <meta name="description" content="La miglior macelleria di Paceco" />
+        <meta name="description" content="Carni Fresche" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Featured />
