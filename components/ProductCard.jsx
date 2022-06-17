@@ -12,10 +12,9 @@ const ProductCard = ({ product }) => {
         <div>
       
           <Image src={ `/image/${product.image}` } alt="" width="500" height="500" />
-          
           <Typography variant="h6" gutterBottom>{ product.name }</Typography>
           <Typography variant="overline" display="block" gutterBottom>€ { product.price } al kg</Typography>
-          <Typography variant="caption" display="block" gutterBottom>{product.description} </Typography>
+          
         </div>
       </Link>
       <AddCart product={ product }/>
