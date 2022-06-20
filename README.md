@@ -25,6 +25,13 @@ yarn dev
 ```
 Apri [http://localhost:3000](http://localhost:3000) con il tuo browser per vedere il risultato.
 
+## Account paypal developer 
+
+Per poter testare il sito, nello specifico per effettuare un ordine, bisogna avere un account paypal developer.
+Account di prova: 
+- E-mail: sb-l6hgg16300275@personal.example.com
+- passoword: w=M82B24
+
 ## Learn More
 
 Per ulteriori informazioni su Next.js, dai un'occhiata alle seguenti risorse:
