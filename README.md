@@ -3,23 +3,26 @@ Questo è un progetto [Next.js](https://nextjs.org/) avviato con [`create-next-a
 ## Getting Started
 
 Innanzitutto, bisogna scaricare l'applicativo [Xampp](https://www.apachefriends.org/download.html) con i seguenti moduli:
+
 -[Apache](https://www.apache.org/),
 
 -[MySql](https://nextjs.org/). 
 
 Dopo, bisogna attiviare i due moduli, aprire dal browser la dashboard di [phpMyAdmin](https://skillforge.com/how-to-create-a-database-using-phpmyadmin-xampp/), 
-andare nella sezione crea nuovo database, andare nel tab IMPORT selezionare il file macelleria.sql, deselezionare il flag su opzioni specifiche al formato ed infine lanciare l'esecuzione.
+andare nella sezione crea nuovo database, andare nel tab IMPORT selezionare il file [macelleria.sql](https://github.com/leominaudo/WebApp-Macelleria/blob/main/macelleria.sql), deselezionare il flag su opzioni specifiche al formato ed infine lanciare l'esecuzione.
 
 A questo punto è stato creato il database, 
-ora bisogna aggiungere i file presenti nella directory api/ all'interno della document root di xampp al seguente path: 
-C:\("path di installazione")\xampp\htdocs\api\, questo passaggio è fondamentale perchè in questo modo andiamo a configurare la connessione al nostro DB e ad aggiungere tutti gli endpoint che sono stati implementati nel file index.php .
+ora bisogna aggiungere i file presenti nella directory ```api/``` all'interno della document root di xampp al seguente path: 
+```C:\("path di installazione")\xampp\htdocs\api\```, questo passaggio è fondamentale perchè in questo modo andiamo a configurare la connessione al nostro DB e ad aggiungere tutti gli endpoint che sono stati implementati nel file index.php .
 
-Infine, basta clonare la repository in locale aprire un IDE (es. Visual Studio Code), aprire un terminale, posiziornarsi sulla root della repository ed eseguire il comando:
-
+Infine, basta clonare la repository in locale aprirla con un IDE (es. Visual Studio Code), aprire un terminale, posiziornarsi sulla root della repository ed eseguire il comando:
+```bash
+npm install
 npm run dev
 # or
+yarn install 
 yarn dev
-
+```
 Apri [http://localhost:3000](http://localhost:3000) con il tuo browser per vedere il risultato.
 
 ## Learn More
